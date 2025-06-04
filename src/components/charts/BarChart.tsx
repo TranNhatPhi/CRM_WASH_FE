@@ -72,9 +72,9 @@ export const BarChart: React.FC<BarChartProps> = ({
     },
   };
 
-  return (    <div style={{ height: `${height}px` }}>
-      <Bar data={data} options={options} />
-    </div>
+  return (<div style={{ height: `${height}px` }}>
+    <Bar data={data} options={options} />
+  </div>
   );
 };
 

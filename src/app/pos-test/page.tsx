@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AccessibilityTestSuite } from '@/components/ui/AccessibilityTestSuite';
 import { useVirtualScrolling } from '@/hooks/useVirtualScrolling';
-import { useSwipeGestures } from '@/hooks/useSwipeGestures';
+
 import { useScreenReader } from '@/hooks/useAccessibility';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -32,29 +32,7 @@ export default function POSTestPage() {
     containerHeight: 400,
     overscan: 5,
   });
-
   const { virtualItems, totalHeight, containerProps } = virtualScrollingResult;
-
-  // Swipe gesture handlers
-  const swipeHandlers = useSwipeGestures({
-    onSwipeLeft: () => {
-      const tabs = ['virtual-scroll', 'gestures', 'pwa', 'accessibility'];
-      const currentIndex = tabs.indexOf(activeTab);
-      const nextIndex = (currentIndex + 1) % tabs.length;
-      setActiveTab(tabs[nextIndex]);
-      announce(`Switched to ${tabs[nextIndex].replace('-', ' ')} tab`);
-    },
-    onSwipeRight: () => {
-      const tabs = ['virtual-scroll', 'gestures', 'pwa', 'accessibility'];
-      const currentIndex = tabs.indexOf(activeTab);
-      const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-      setActiveTab(tabs[prevIndex]);
-      announce(`Switched to ${tabs[prevIndex].replace('-', ' ')} tab`);
-    },
-  }, {
-    threshold: 100,
-    trackMouse: false,
-  });
 
   const testPWAFeatures = () => {
     announce('Testing PWA features');
@@ -92,19 +70,15 @@ export default function POSTestPage() {
               virtual scrolling, touch gestures, PWA capabilities, and accessibility improvements.
             </p>
           </div>
-        </Card>
-
-        <Card>
-          <div className="p-6" {...swipeHandlers}>
+        </Card>        <Card>
+          <div className="p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="virtual-scroll">Virtual Scroll</TabsTrigger>
                 <TabsTrigger value="gestures">Gestures</TabsTrigger>
                 <TabsTrigger value="pwa">PWA</TabsTrigger>
                 <TabsTrigger value="accessibility">A11y</TabsTrigger>
-              </TabsList>
-
-              {/* Mobile swipe indicator */}
+              </TabsList>              {/* Mobile navigation indicator */}
               <div className="sm:hidden flex justify-center mt-2 mb-4">
                 <div className="flex items-center space-x-2">
                   <div className="flex space-x-1">
@@ -117,7 +91,7 @@ export default function POSTestPage() {
                       />
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500">← Swipe to navigate →</p>
+                  <p className="text-xs text-gray-500">← Tap tabs to navigate →</p>
                 </div>
               </div>
 
@@ -161,24 +135,23 @@ export default function POSTestPage() {
               <TabsContent value="gestures" className="mt-6">
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Touch Gesture Support</h3>
-                  <div className="grid gap-4">
-                    <Card className="p-4">
+                  <div className="grid gap-4">                    <Card className="p-4">
                       <h4 className="font-medium mb-2">Swipe Navigation</h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        Try swiping left or right on this tab container to navigate between tabs.
+                        Swipe navigation has been disabled for better stability.
                       </p>
-                      <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded">
-                        <p className="text-sm">👆 Swipe gestures are active on this container</p>
+                      <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded">
+                        <p className="text-sm">ℹ️ Swipe gestures are currently disabled</p>
                       </div>
                     </Card>
                     
                     <Card className="p-4">
-                      <h4 className="font-medium mb-2">Gesture Configuration</h4>
+                      <h4 className="font-medium mb-2">Navigation Alternative</h4>
                       <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                        <li>• Minimum swipe distance: 100px</li>
-                        <li>• Touch tracking: Enabled</li>
-                        <li>• Mouse tracking: Disabled (production)</li>
-                        <li>• Gesture feedback: Screen reader announcements</li>
+                        <li>• Use tab buttons above to navigate</li>
+                        <li>• Keyboard navigation: Arrow keys + Enter</li>
+                        <li>• Touch: Tap on tab buttons</li>
+                        <li>• Screen reader: Full accessibility support</li>
                       </ul>
                     </Card>
                   </div>

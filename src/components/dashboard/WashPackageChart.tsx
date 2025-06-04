@@ -37,7 +37,7 @@ export const WashPackageChart: React.FC<WashPackageChartProps> = ({ data }) => {
           {data.map((pkg, index) => (
             <div key={pkg.id} className="flex items-center justify-between text-sm">
               <div className="flex items-center">
-                <div 
+                <div
                   className="w-3 h-3 rounded-full mr-2"
                   style={{ backgroundColor: pkg.color }}
                 />

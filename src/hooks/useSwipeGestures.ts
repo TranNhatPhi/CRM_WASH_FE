@@ -50,7 +50,7 @@ export function useSwipeGestures(
     const deltaX = currentPoint.current.x - startPoint.current.x;
     const deltaY = currentPoint.current.y - startPoint.current.y;
     const deltaTime = currentPoint.current.time - startPoint.current.time;
-    
+
     // Ignore very slow gestures (> 1 second)
     if (deltaTime > 1000) return;
 
@@ -123,9 +123,23 @@ export function useSwipeGestures(
     if (!trackMouse) return;
     resetSwipe();
   }, [resetSwipe, trackMouse]);
-
-  // Return object with all event handlers
+  // Return object with event handlers separated from state
   return {
+    // DOM-safe event handlers (can be safely spread onto elements)
+    handlers: {
+      onTouchStart,
+      onTouchMove,
+      onTouchEnd,
+      onMouseDown,
+      onMouseMove,
+      onMouseUp,
+      onMouseLeave,
+    },
+    // Component state (should not be spread onto DOM elements)
+    state: {
+      isSwiping,
+    },
+    // Individual handlers for compatibility
     onTouchStart,
     onTouchMove,
     onTouchEnd,
@@ -133,7 +147,6 @@ export function useSwipeGestures(
     onMouseMove,
     onMouseUp,
     onMouseLeave,
-    isSwiping,
   };
 }
 
@@ -142,7 +155,7 @@ export function useSwipeNavigation() {
   const [currentTab, setCurrentTab] = useState(0);
   const [history, setHistory] = useState<string[]>([]);
 
-  const swipeHandlers = useSwipeGestures({
+  const swipeGestures = useSwipeGestures({
     onSwipeLeft: () => {
       // Navigate to next tab or forward in history
       console.log('Swipe left - next');
@@ -160,9 +173,9 @@ export function useSwipeNavigation() {
       console.log('Swipe down - scroll down');
     },
   });
-
   return {
-    ...swipeHandlers,
+    // Use handlers property to avoid spreading state
+    ...swipeGestures.handlers,
     currentTab,
     setCurrentTab,
     history,
@@ -177,7 +190,7 @@ export function usePullToRefresh(onRefresh: () => Promise<void> | void) {
   const maxPullDistance = 100;
   const refreshThreshold = 60;
 
-  const swipeHandlers = useSwipeGestures({
+  const swipeGestures = useSwipeGestures({
     onSwipeDown: async () => {
       if (pullDistance > refreshThreshold && !isRefreshing) {
         setIsRefreshing(true);
@@ -190,9 +203,9 @@ export function usePullToRefresh(onRefresh: () => Promise<void> | void) {
       }
     },
   });
-
   return {
-    ...swipeHandlers,
+    // Use handlers property to avoid spreading state
+    ...swipeGestures.handlers,
     isRefreshing,
     pullDistance,
     maxPullDistance,

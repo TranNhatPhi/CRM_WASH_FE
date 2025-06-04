@@ -6,11 +6,11 @@ import { Card } from '@/components/ui/card';
 import LineChart from '@/components/charts/LineChart';
 import BarChart from '@/components/charts/BarChart';
 import PieChart from '@/components/charts/PieChart';
-import { 
-  generateMonthlyRevenueData, 
-  generateCustomerAnalytics, 
+import {
+  generateMonthlyRevenueData,
+  generateCustomerAnalytics,
   generateWashTypeAnalytics,
-  generateHourlyCustomerData 
+  generateHourlyCustomerData
 } from '@/lib/data';
 
 export default function AnalyticsPage() {

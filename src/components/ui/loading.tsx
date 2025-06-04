@@ -5,9 +5,9 @@ interface LoadingSpinnerProps {
   className?: string;
 }
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
-  size = 'md', 
-  className = '' 
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  size = 'md',
+  className = ''
 }) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
@@ -25,9 +25,9 @@ interface LoadingStateProps {
   className?: string;
 }
 
-export const LoadingState: React.FC<LoadingStateProps> = ({ 
-  message = 'Đang tải...', 
-  className = '' 
+export const LoadingState: React.FC<LoadingStateProps> = ({
+  message = 'Đang tải...',
+  className = ''
 }) => {
   return (
     <div className={`flex flex-col items-center justify-center py-12 ${className}`}>

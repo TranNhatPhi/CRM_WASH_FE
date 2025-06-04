@@ -45,7 +45,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       const newCustomer: POSCustomer = {
         name: formData.name.trim(),
@@ -54,7 +54,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
         vehiclePlate: formData.vehiclePlate.trim() || undefined,
         isVIP: formData.isVIP,
       };
-      
+
       onCustomerChange(newCustomer);
     }
   };
@@ -86,7 +86,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
           <span className="sm:hidden">Customer</span>
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           {/* Name Field */}
@@ -100,9 +100,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className={`w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-600 dark:text-white ${
-                  errors.name ? 'border-red-500' : 'border-gray-300 dark:border-slate-600'
-                }`}
+                className={`w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-600 dark:text-white ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-slate-600'
+                  }`}
                 placeholder="Enter customer name"
               />
             </div>
@@ -122,9 +121,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                className={`w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-600 dark:text-white ${
-                  errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-slate-600'
-                }`}
+                className={`w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-600 dark:text-white ${errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-slate-600'
+                  }`}
                 placeholder="+1-555-0123"
               />
             </div>
@@ -145,9 +143,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-600 dark:text-white ${
-                  errors.email ? 'border-red-500' : 'border-gray-300 dark:border-slate-600'
-                }`}
+                className={`w-full pl-8 sm:pl-10 pr-2 sm:pr-3 py-1.5 sm:py-2 border rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-slate-800 dark:border-slate-600 dark:text-white ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-slate-600'
+                  }`}
                 placeholder="customer@email.com"
               />
             </div>
@@ -204,7 +201,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ customer, onCustomer
                 {customer ? 'Update' : 'Add'}
               </span>
             </Button>
-            
+
             {(customer || formData.name || formData.phone) && (
               <Button
                 type="button"

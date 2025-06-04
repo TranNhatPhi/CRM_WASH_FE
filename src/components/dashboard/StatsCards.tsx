@@ -48,26 +48,26 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ stats }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {statItems.map((item, index) => (        <Card key={index} className="dashboard-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                  {item.title}
-                </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {item.value}
-                </p>
-                <p className="text-xs text-green-600 dark:text-green-400 mt-1">
-                  {item.change} since yesterday
-                </p>
-              </div>
-              <div className={`p-3 rounded-full ${item.bgColor}`}>
-                <item.icon className={`h-6 w-6 ${item.color}`} />
-              </div>
+      {statItems.map((item, index) => (<Card key={index} className="dashboard-card">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                {item.title}
+              </p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {item.value}
+              </p>
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                {item.change} since yesterday
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <div className={`p-3 rounded-full ${item.bgColor}`}>
+              <item.icon className={`h-6 w-6 ${item.color}`} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       ))}
     </div>
   );

@@ -6,18 +6,18 @@ import { StatsCards } from '@/components/dashboard/StatsCards';
 import { HourlyStatsChart } from '@/components/dashboard/HourlyStatsChart';
 import { ComparisonChart } from '@/components/dashboard/ComparisonChart';
 import { WashPackageChart } from '@/components/dashboard/WashPackageChart';
-import { 
-  fetchDashboardData, 
-  fetchHourlyStats, 
-  fetchComparisonData, 
+import {
+  fetchDashboardData,
+  fetchHourlyStats,
+  fetchComparisonData,
   fetchWashPackages,
   fetchLaborData,
   fetchMonthlyComparison
 } from '@/lib/data';
-import { 
-  DashboardStats, 
-  HourlyStats, 
-  ComparisonData, 
+import {
+  DashboardStats,
+  HourlyStats,
+  ComparisonData,
   WashPackage,
   LaborData,
   MonthlyComparison
@@ -120,7 +120,7 @@ export default function DashboardPage() {
         {/* Second Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <WashPackageChart data={washPackages} />
-            {/* Monthly Comparison Chart */}
+          {/* Monthly Comparison Chart */}
           <Card className="dashboard-card">
             <CardHeader>
               <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -181,16 +181,15 @@ export default function DashboardPage() {
                     </div>
                     <div className="mt-1 flex justify-between text-xs text-gray-500 dark:text-gray-400">
                       <span>Yesterday: {worker.hrsYesterday}h</span>
-                      <span className={`font-medium ${
-                        worker.hrsToday > worker.hrsYesterday ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                      }`}>
+                      <span className={`font-medium ${worker.hrsToday > worker.hrsYesterday ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                        }`}>
                         {worker.hrsToday > worker.hrsYesterday ? '+' : ''}
                         {(worker.hrsToday - worker.hrsYesterday).toFixed(1)}h
                       </span>
                     </div>
                   </div>
                 ))}
-                
+
                 <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>

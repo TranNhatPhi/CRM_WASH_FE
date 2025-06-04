@@ -9,7 +9,11 @@
   "background_color": "#ffffff",
   "scope": "/",
   "lang": "en",
-  "categories": ["business", "productivity", "utilities"],
+  "categories": [
+    "business",
+    "productivity",
+    "utilities"
+  ],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",

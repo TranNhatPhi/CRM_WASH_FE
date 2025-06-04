@@ -81,7 +81,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               return (
                 <li key={item.name}>
                   <Link
-                    href={item.href}                    className={cn(
+                    href={item.href} className={cn(
                       'flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200',
                       isActive
                         ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 border-r-2 border-primary-700 dark:border-primary-400'

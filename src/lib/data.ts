@@ -72,7 +72,7 @@ export const chartColors = {
 };
 
 export const packageColors = [
-  '#22C55E', '#3B82F6', '#F59E0B', '#EF4444', 
+  '#22C55E', '#3B82F6', '#F59E0B', '#EF4444',
   '#8B5CF6', '#06B6D4', '#84CC16', '#F97316',
   '#EC4899', '#6366F1', '#14B8A6', '#F43F5E'
 ];
@@ -226,7 +226,7 @@ export const generatePOSTransactions = (): POSTransaction[] => {
     const services = mockPOSServices
       .sort(() => 0.5 - Math.random())
       .slice(0, Math.floor(Math.random() * 3) + 1);
-    
+
     const items: CartItem[] = services.map(service => ({
       service,
       quantity: 1,
@@ -285,7 +285,7 @@ export const generateHourlyCustomerData = () => {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   return hours.map(hour => ({
     hour,
-    customers: hour >= 6 && hour <= 22 
+    customers: hour >= 6 && hour <= 22
       ? Math.floor(Math.random() * 25) + (hour >= 8 && hour <= 18 ? 15 : 5)
       : Math.floor(Math.random() * 3),
   }));
@@ -295,7 +295,7 @@ export const generateHourlyCustomerData = () => {
 export const generateCarData = () => {
   const carTypes = ['Sedan', 'SUV', 'Hatchback', 'Pickup', 'Van', 'Luxury'];
   const brands = ['Toyota', 'Honda', 'Mazda', 'Ford', 'Hyundai', 'KIA', 'BMW', 'Mercedes'];
-  
+
   return Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
     licensePlate: `${Math.floor(Math.random() * 90) + 10}A-${Math.floor(Math.random() * 999) + 100}.${Math.floor(Math.random() * 99) + 10}`,
@@ -316,7 +316,7 @@ export const generateCarData = () => {
 export const generateStaffData = () => {
   const positions = ['Shift Manager', 'Wash Technician', 'Cashier', 'Security', 'Maintenance Technician'];
   const shifts = ['Morning Shift', 'Afternoon Shift', 'Evening Shift', 'Full-time'];
-  
+
   return Array.from({ length: 25 }, (_, i) => ({
     id: i + 1,
     name: `Employee ${i + 1}`,
@@ -350,7 +350,7 @@ export const generateRevenueData = () => {
       })),
     };
   });
-  
+
   return last30Days;
 };
 

@@ -23,11 +23,11 @@ const API_CACHE_PATTERNS = [
 // Install event - cache essential resources
 self.addEventListener('install', (event) => {
   console.log('Service Worker installing...');
-  
+
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
-      
+
       try {
         // Cache essential files
         await cache.addAll(ESSENTIAL_CACHE);
@@ -43,7 +43,7 @@ self.addEventListener('install', (event) => {
           }
         }
       }
-      
+
       // Skip waiting to activate immediately
       self.skipWaiting();
     })()
@@ -53,7 +53,7 @@ self.addEventListener('install', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   console.log('Service Worker activating...');
-  
+
   event.waitUntil(
     (async () => {
       // Clean up old caches
@@ -63,7 +63,7 @@ self.addEventListener('activate', (event) => {
           .filter(cacheName => cacheName !== CACHE_NAME)
           .map(cacheName => caches.delete(cacheName))
       );
-      
+
       // Take control of all pages
       await self.clients.claim();
       console.log('Service Worker activated');
@@ -75,17 +75,17 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
   // Skip non-GET requests
   if (request.method !== 'GET') {
     return;
   }
-  
+
   // Skip external requests
   if (url.origin !== self.location.origin) {
     return;
   }
-  
+
   // Handle different types of requests
   if (url.pathname.startsWith('/api/')) {
     // API requests - Network First with fallback to cache
@@ -102,26 +102,26 @@ self.addEventListener('fetch', (event) => {
 // Handle API requests with network-first strategy
 async function handleApiRequest(request) {
   const cache = await caches.open(CACHE_NAME);
-  
+
   try {
     // Try network first
     const networkResponse = await fetch(request);
-    
+
     // Cache successful responses
     if (networkResponse.ok) {
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     console.log('Network failed for API request, trying cache:', request.url);
-    
+
     // Fallback to cache
     const cachedResponse = await cache.match(request);
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     // Return offline response for API requests
     return new Response(
       JSON.stringify({
@@ -143,22 +143,22 @@ async function handleApiRequest(request) {
 // Handle asset requests with cache-first strategy
 async function handleAssetRequest(request) {
   const cache = await caches.open(CACHE_NAME);
-  
+
   // Try cache first
   const cachedResponse = await cache.match(request);
   if (cachedResponse) {
     return cachedResponse;
   }
-  
+
   try {
     // Fallback to network
     const networkResponse = await fetch(request);
-    
+
     // Cache successful responses
     if (networkResponse.ok) {
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     console.error('Failed to fetch asset:', request.url);
@@ -169,26 +169,26 @@ async function handleAssetRequest(request) {
 // Handle page requests with network-first strategy
 async function handlePageRequest(request) {
   const cache = await caches.open(CACHE_NAME);
-  
+
   try {
     // Try network first
     const networkResponse = await fetch(request);
-    
+
     // Cache successful responses
     if (networkResponse.ok) {
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     console.log('Network failed for page request, trying cache:', request.url);
-    
+
     // Try to serve from cache
     const cachedResponse = await cache.match(request);
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     // Fallback to offline page for navigation requests
     if (request.mode === 'navigate') {
       const offlineResponse = await cache.match(OFFLINE_URL);
@@ -196,7 +196,7 @@ async function handlePageRequest(request) {
         return offlineResponse;
       }
     }
-    
+
     throw error;
   }
 }
@@ -214,7 +214,7 @@ async function syncOfflineTransactions() {
   try {
     // Get offline transactions from IndexedDB or localStorage
     const offlineTransactions = await getOfflineTransactions();
-    
+
     for (const transaction of offlineTransactions) {
       try {
         const response = await fetch('/api/transactions', {
@@ -224,7 +224,7 @@ async function syncOfflineTransactions() {
           },
           body: JSON.stringify(transaction)
         });
-        
+
         if (response.ok) {
           await removeOfflineTransaction(transaction.id);
           console.log('Synced offline transaction:', transaction.id);
@@ -252,7 +252,7 @@ async function removeOfflineTransaction(transactionId) {
 // Handle push notifications (for order updates)
 self.addEventListener('push', (event) => {
   if (!event.data) return;
-  
+
   const data = event.data.json();
   const options = {
     body: data.body || 'New notification from CRM Wash',
@@ -273,7 +273,7 @@ self.addEventListener('push', (event) => {
       }
     ]
   };
-  
+
   event.waitUntil(
     self.registration.showNotification(data.title || 'CRM Wash', options)
   );
@@ -282,7 +282,7 @@ self.addEventListener('push', (event) => {
 // Handle notification clicks
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
+
   if (event.action === 'view') {
     event.waitUntil(
       clients.openWindow('/pos?notification=' + event.notification.data?.id)

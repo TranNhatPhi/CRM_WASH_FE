@@ -27,19 +27,19 @@ export default function OfflinePage() {
               Please check your internet connection and try again.
             </p>
           </div>
-          
+
           <div className="space-y-4">
-            <Button 
-              onClick={handleRetry} 
+            <Button
+              onClick={handleRetry}
               className="w-full"
               variant="default"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try Again
             </Button>
-            
-            <Button 
-              onClick={handleGoHome} 
+
+            <Button
+              onClick={handleGoHome}
               variant="outline"
               className="w-full"
             >
@@ -47,10 +47,10 @@ export default function OfflinePage() {
               Go to Homepage
             </Button>
           </div>
-          
+
           <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <p className="text-sm text-blue-800 dark:text-blue-200">
-              <strong>Offline Mode:</strong> Some features may be limited while offline. 
+              <strong>Offline Mode:</strong> Some features may be limited while offline.
               Your data will sync when connection is restored.
             </p>
           </div>

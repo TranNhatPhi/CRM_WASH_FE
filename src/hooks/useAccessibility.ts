@@ -95,7 +95,7 @@ export function useScreenReader() {
     if (liveRegion) {
       liveRegion.setAttribute('aria-live', priority);
       liveRegion.textContent = message;
-      
+
       // Clear the message after a short delay to allow for repeated announcements
       setTimeout(() => {
         liveRegion.textContent = '';
@@ -118,10 +118,10 @@ export function useHighContrast() {
     };
 
     checkHighContrast();
-    
+
     const mediaQuery = window.matchMedia('(prefers-contrast: high)');
     mediaQuery.addEventListener('change', checkHighContrast);
-    
+
     return () => mediaQuery.removeEventListener('change', checkHighContrast);
   }, []);
 
@@ -184,7 +184,7 @@ export function useFocusManagement() {
     const focusableElements = containerElement.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     const firstElement = focusableElements[0] as HTMLElement;
     const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
@@ -205,7 +205,7 @@ export function useFocusManagement() {
     };
 
     containerElement.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       containerElement.removeEventListener('keydown', handleKeyDown);
     };

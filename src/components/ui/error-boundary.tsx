@@ -41,7 +41,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             <p className="text-gray-600 mb-4">
               Xin lỗi, đã có lỗi xảy ra khi tải nội dung. Vui lòng thử lại.
             </p>
-            <Button 
+            <Button
               onClick={() => this.setState({ hasError: false })}
               className="bg-blue-600 hover:bg-blue-700"
             >
@@ -79,7 +79,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Lỗi</h3>
         <p className="text-gray-600 mb-4">{message}</p>
         {onRetry && (
-          <Button 
+          <Button
             onClick={onRetry}
             className="bg-blue-600 hover:bg-blue-700"
           >

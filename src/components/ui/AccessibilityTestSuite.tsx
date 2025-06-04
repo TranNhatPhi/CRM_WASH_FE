@@ -3,13 +3,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Eye, 
-  Keyboard, 
-  Volume2, 
-  Monitor, 
-  Check, 
-  X, 
+import {
+  Eye,
+  Keyboard,
+  Volume2,
+  Monitor,
+  Check,
+  X,
   AlertTriangle,
   Accessibility
 } from 'lucide-react';
@@ -58,7 +58,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
       category: 'visual',
       status: 'not-tested',
     },
-    
+
     // Keyboard Tests
     {
       id: 'keyboard-navigation',
@@ -81,7 +81,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
       category: 'keyboard',
       status: 'not-tested',
     },
-    
+
     // Screen Reader Tests
     {
       id: 'headings-structure',
@@ -111,7 +111,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
       category: 'screen-reader',
       status: 'not-tested',
     },
-    
+
     // Responsive Tests
     {
       id: 'mobile-touch-targets',
@@ -140,10 +140,10 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
     // Simulate running tests with realistic results
     for (let i = 0; i < updatedTests.length; i++) {
       const test = updatedTests[i];
-      
+
       // Add a small delay to simulate testing
       await new Promise(resolve => setTimeout(resolve, 200));
-      
+
       // Run actual tests based on test type
       switch (test.id) {
         case 'color-contrast':
@@ -178,10 +178,10 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
           test.status = 'warning';
           test.details = 'Manual testing required';
       }
-      
+
       setTests([...updatedTests]);
     }
-    
+
     setIsRunning(false);
   };
 
@@ -196,7 +196,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
     const focusableElements = document.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     // Check if elements have focus styles
     let hasFocusStyles = true;
     focusableElements.forEach(element => {
@@ -205,14 +205,14 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
         hasFocusStyles = false;
       }
     });
-    
+
     return hasFocusStyles ? 'pass' : 'warning';
   };
 
   const checkKeyboardNavigation = (): 'pass' | 'fail' | 'warning' => {
     const buttons = document.querySelectorAll('button:not([disabled])');
     const links = document.querySelectorAll('a[href]');
-    
+
     if (buttons.length > 0 && links.length > 0) {
       return 'pass';
     }
@@ -230,57 +230,57 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
   const checkAltText = (): 'pass' | 'fail' | 'warning' => {
     const images = document.querySelectorAll('img');
     let hasProperAlt = true;
-    
+
     images.forEach(img => {
       if (!img.alt && !img.getAttribute('aria-label')) {
         hasProperAlt = false;
       }
     });
-    
+
     return hasProperAlt ? 'pass' : 'warning';
   };
 
   const checkAriaLabels = (): 'pass' | 'fail' | 'warning' => {
     const interactiveElements = document.querySelectorAll('button, [role="button"]');
     let hasProperLabels = true;
-    
+
     interactiveElements.forEach(element => {
       if (!element.getAttribute('aria-label') && !element.textContent?.trim()) {
         hasProperLabels = false;
       }
     });
-    
+
     return hasProperLabels ? 'pass' : 'warning';
   };
 
   const checkFormLabels = (): 'pass' | 'fail' | 'warning' => {
     const inputs = document.querySelectorAll('input, select, textarea');
     let hasProperLabels = true;
-    
+
     inputs.forEach(input => {
       const id = input.id;
       const label = document.querySelector(`label[for="${id}"]`);
       const ariaLabel = input.getAttribute('aria-label');
-      
+
       if (!label && !ariaLabel) {
         hasProperLabels = false;
       }
     });
-    
+
     return hasProperLabels ? 'pass' : 'warning';
   };
 
   const checkTouchTargets = (): 'pass' | 'fail' | 'warning' => {
     const touchTargets = document.querySelectorAll('button, a, [role="button"]');
     let hasProperSize = true;
-    
+
     touchTargets.forEach(element => {
       const rect = element.getBoundingClientRect();
       if (rect.width < 44 || rect.height < 44) {
         hasProperSize = false;
       }
     });
-    
+
     return hasProperSize ? 'pass' : 'warning';
   };
 
@@ -314,7 +314,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
     const categoryTests = tests.filter(test => test.category === category);
     const passCount = categoryTests.filter(test => test.status === 'pass').length;
     const totalCount = categoryTests.length;
-    
+
     return `${passCount}/${totalCount}`;
   };
 
@@ -334,17 +334,17 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
             </Button>
           </div>
         </div>
-        
+
         <CardContent className="p-6 overflow-y-auto max-h-[70vh]">
           <div className="mb-6">
-            <Button 
-              onClick={runAccessibilityTests} 
+            <Button
+              onClick={runAccessibilityTests}
               disabled={isRunning}
               className="mb-4"
             >
               {isRunning ? 'Running Tests...' : 'Run Accessibility Tests'}
             </Button>
-            
+
             {/* Summary */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {['visual', 'keyboard', 'screen-reader', 'responsive'].map(category => (
@@ -360,7 +360,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
               ))}
             </div>
           </div>
-          
+
           {/* Test Results */}
           <div className="space-y-4">
             {['visual', 'keyboard', 'screen-reader', 'responsive'].map(category => (
@@ -369,12 +369,12 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
                   {getCategoryIcon(category as any)}
                   <span className="ml-2">{category.replace('-', ' ')} Tests</span>
                 </h3>
-                
+
                 <div className="space-y-2">
                   {tests
                     .filter(test => test.category === category)
                     .map(test => (
-                      <div 
+                      <div
                         key={test.id}
                         className="flex items-start space-x-3 p-3 bg-white dark:bg-gray-900 border rounded-lg"
                       >

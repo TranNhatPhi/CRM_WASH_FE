@@ -15,8 +15,8 @@ export default function StaffPage() {
 
   const filteredStaff = staff.filter(member => {
     const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         member.phone.includes(searchTerm);
+      member.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.phone.includes(searchTerm);
     const matchesPosition = selectedPosition === 'All' || member.position === selectedPosition;
     const matchesShift = selectedShift === 'All' || member.shift === selectedShift;
     return matchesSearch && matchesPosition && matchesShift;
@@ -141,7 +141,7 @@ export default function StaffPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                
+
                 <select
                   className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   value={selectedPosition}
@@ -167,7 +167,7 @@ export default function StaffPage() {
                   <option value="Full-time">Full-time</option>
                 </select>
               </div>
-              
+
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Showing {filteredStaff.length} staff members
               </div>
@@ -182,10 +182,10 @@ export default function StaffPage() {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">                    <div className="w-12 h-12 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
+                    <svg className="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">{member.name}</h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{member.position}</p>
@@ -262,21 +262,21 @@ export default function StaffPage() {
                 {staff
                   .sort((a, b) => b.performance - a.performance)
                   .slice(0, 5)
-                  .map((member, index) => (                    <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">{index + 1}</span>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900 dark:text-white">{member.name}</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{member.position}</p>
-                        </div>
+                  .map((member, index) => (<div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">{index + 1}</span>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-gray-900 dark:text-white">{member.performance}%</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{member.tasksCompleted} tasks</p>
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">{member.name}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{member.position}</p>
                       </div>
                     </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-gray-900 dark:text-white">{member.performance}%</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{member.tasksCompleted} tasks</p>
+                    </div>
+                  </div>
                   ))}
               </div>
             </div>
@@ -288,14 +288,14 @@ export default function StaffPage() {
                 {['Morning Shift', 'Afternoon Shift', 'Evening Shift', 'Full-time'].map((shift) => {
                   const count = staff.filter(member => member.shift === shift).length;
                   const percentage = (count / staff.length) * 100;
-                  
+
                   return (
                     <div key={shift} className="flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-900 dark:text-white">{shift}</span>
                       <div className="flex items-center space-x-2">
                         <div className="w-32 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                          <div 
-                            className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full" 
+                          <div
+                            className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full"
                             style={{ width: `${percentage}%` }}
                           ></div>
                         </div>

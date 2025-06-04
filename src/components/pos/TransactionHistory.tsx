@@ -4,12 +4,12 @@ import React from 'react';
 import { POSTransaction } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Receipt, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  User, 
+import {
+  Receipt,
+  Clock,
+  CheckCircle,
+  XCircle,
+  User,
   Car,
   CreditCard,
   Banknote,
@@ -73,37 +73,37 @@ const paymentMethodConfig = {
   },
 };
 
-export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ 
-  transactions, 
-  filter 
+export const TransactionHistory: React.FC<TransactionHistoryProps> = ({
+  transactions,
+  filter
 }) => {
   const itemHeight = useResponsiveItemHeight();
   const [containerHeight, setContainerHeight] = React.useState(600);
-  
+
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       setContainerHeight(Math.min(600, window.innerHeight * 0.6));
     }
   }, []);
-  
+
   // Use virtual scrolling only for large datasets (>10 items)
   const shouldUseVirtualScrolling = transactions.length > 10;
-  
+
   const virtualScrolling = useVirtualScrolling(transactions, {
     itemHeight,
     containerHeight,
     overscan: 3,
   });
-  
+
   if (transactions.length === 0) {
     return (
       <div className="text-center py-8 sm:py-12 text-gray-500 dark:text-gray-400">
         <Receipt className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 opacity-50" />
         <p className="text-xs sm:text-sm">No transactions found</p>
         <p className="text-xs mt-1">
-          {filter === 'pending' ? 'No pending orders' : 
-           filter === 'completed' ? 'No completed transactions' : 
-           'Start processing orders to see history'}
+          {filter === 'pending' ? 'No pending orders' :
+            filter === 'completed' ? 'No completed transactions' :
+              'Start processing orders to see history'}
         </p>
       </div>
     );
@@ -203,7 +203,7 @@ const TransactionCard: React.FC<TransactionCardProps> = ({ transaction }) => {
               {transaction.items.map((item) => (
                 <div key={item.service.id} className="flex items-center justify-between text-xs sm:text-sm">
                   <div className="flex items-center min-w-0">
-                    <div 
+                    <div
                       className="w-2 h-2 rounded-full mr-2 flex-shrink-0"
                       style={{ backgroundColor: item.service.color }}
                     />

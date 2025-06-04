@@ -12,7 +12,7 @@ import { formatCurrency, formatDateCustom } from '@/utils';
 export default function RevenuePage() {
   const revenueData = generateRevenueData();
   const expenseData = generateExpenseData();
-  
+
   const totalRevenue = revenueData.reduce((sum, day) => sum + day.revenue, 0);
   const totalExpenses = expenseData.reduce((sum, expense) => sum + expense.amount, 0);
   const profit = totalRevenue - totalExpenses;
@@ -215,7 +215,7 @@ export default function RevenuePage() {
                   {revenueData.slice(-7).reverse().map((day, index) => {
                     const prevDay = revenueData[revenueData.length - 8 + index];
                     const trend = prevDay ? ((day.revenue - prevDay.revenue) / prevDay.revenue * 100) : 0;
-                    
+
                     return (
                       <tr key={day.date} className="hover:bg-gray-50">
                         <td className="px-4 py-3 text-sm text-gray-900">

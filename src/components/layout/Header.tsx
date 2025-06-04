@@ -49,9 +49,9 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick, title = 'Dashboard'
             </Button>
 
             {/* Theme toggle */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={toggleTheme}
               className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             >

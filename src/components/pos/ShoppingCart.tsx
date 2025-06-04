@@ -45,7 +45,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
           )}
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="space-y-3 sm:space-y-4">
         {/* Cart Items */}
         {isCartEmpty ? (
@@ -69,7 +69,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                     {formatCurrency(item.service.price)} × {item.quantity}
                   </p>
                 </div>
-                  <div className="flex items-center space-x-2 ml-3">
+                <div className="flex items-center space-x-2 ml-3">
                   {/* Quantity Controls */}
                   <div className="flex items-center space-x-1 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md p-1">
                     <button
@@ -91,7 +91,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
-                  
+
                   {/* Remove Button */}
                   <button
                     onClick={() => onRemoveItem(item.service.id)}
@@ -111,19 +111,19 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
               <span className="text-gray-600 dark:text-gray-400">Subtotal:</span>
               <span className="text-gray-900 dark:text-white">{formatCurrency(subtotal)}</span>
             </div>
-            
+
             {discount > 0 && (
               <div className="flex justify-between text-xs sm:text-sm text-green-600 dark:text-green-400">
                 <span>VIP Discount (10%):</span>
                 <span>-{formatCurrency(discount)}</span>
               </div>
             )}
-            
+
             <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-gray-600 dark:text-gray-400">Tax (10%):</span>
               <span className="text-gray-900 dark:text-white">{formatCurrency(tax)}</span>
             </div>
-            
+
             <div className="flex justify-between text-sm sm:text-lg font-semibold border-t border-gray-200 dark:border-slate-700 pt-1 sm:pt-2">
               <span className="text-gray-900 dark:text-white">Total:</span>
               <span className="text-gray-900 dark:text-white">{formatCurrency(total)}</span>
@@ -161,7 +161,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
               Clear Cart
             </Button>
           )}
-          
+
           <Button
             onClick={onProcessTransaction}
             disabled={!canProcessTransaction}

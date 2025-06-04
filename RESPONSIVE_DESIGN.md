@@ -95,12 +95,12 @@ This document outlines the responsive design improvements made to the POS (Point
 
 ## 📊 Responsive Breakpoints
 
-| Device Type | Screen Size | Layout | Key Features |
-|-------------|-------------|---------|--------------|
-| **Mobile** | < 640px | Vertical Stack | Compact UI, essential features only |
-| **Tablet** | 641px - 1024px | Sidebar Layout | Hybrid view with sidebar cart |
-| **Desktop** | 1025px - 1536px | Three-Column | Full-featured layout |
-| **Large Desktop** | > 1536px | Enhanced Layout | Maximum information density |
+| Device Type       | Screen Size     | Layout          | Key Features                        |
+| ----------------- | --------------- | --------------- | ----------------------------------- |
+| **Mobile**        | < 640px         | Vertical Stack  | Compact UI, essential features only |
+| **Tablet**        | 641px - 1024px  | Sidebar Layout  | Hybrid view with sidebar cart       |
+| **Desktop**       | 1025px - 1536px | Three-Column    | Full-featured layout                |
+| **Large Desktop** | > 1536px        | Enhanced Layout | Maximum information density         |
 
 ## 🎨 Visual Improvements
 

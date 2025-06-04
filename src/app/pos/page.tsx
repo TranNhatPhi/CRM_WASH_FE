@@ -8,7 +8,6 @@ import { fetchPOSServices, generatePOSTransactions } from '@/lib/data';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useSwipeGestures } from '@/hooks/useSwipeGestures';
 import { useScreenReader } from '@/hooks/useAccessibility';
 import { AccessibilityTestSuite } from '@/components/ui/AccessibilityTestSuite';
 
@@ -17,37 +16,13 @@ export default function POSPage() {
   const [services, setServices] = useState<POSService[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customer, setCustomer] = useState<POSCustomer | null>(null);
-  const [transactions, setTransactions] = useState<POSTransaction[]>([]);  const [loading, setLoading] = useState(true);
+  const [transactions, setTransactions] = useState<POSTransaction[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('recent');
-  const [showA11yTests, setShowA11yTests] = useState(false);  // Accessibility features
-  const { announce } = useScreenReader();
+  const [showA11yTests, setShowA11yTests] = useState(false);
 
-  // Swipe gesture handlers for tab navigation (mobile)
-  const swipeHandlers = useSwipeGestures({
-    onSwipeLeft: () => {
-      // Navigate to next tab
-      if (activeTab === 'recent') {
-        setActiveTab('pending');
-        announce('Switched to pending orders');
-      } else if (activeTab === 'pending') {
-        setActiveTab('completed');
-        announce('Switched to completed orders');
-      }
-    },
-    onSwipeRight: () => {
-      // Navigate to previous tab
-      if (activeTab === 'completed') {
-        setActiveTab('pending');
-        announce('Switched to pending orders');
-      } else if (activeTab === 'pending') {
-        setActiveTab('recent');
-        announce('Switched to recent transactions');
-      }
-    },
-  }, {
-    threshold: 100, // Require 100px swipe
-    trackMouse: false, // Disable mouse tracking for production
-  });
+  // Accessibility features
+  const { announce } = useScreenReader();
 
   useEffect(() => {
     const loadData = async () => {
@@ -55,7 +30,7 @@ export default function POSPage() {
         const [servicesData] = await Promise.all([
           fetchPOSServices(),
         ]);
-        
+
         setServices(servicesData);
         setTransactions(generatePOSTransactions());
       } catch (error) {
@@ -92,7 +67,7 @@ export default function POSPage() {
       removeFromCart(serviceId);
       return;
     }
-    
+
     setCart(prevCart =>
       prevCart.map(item =>
         item.service.id === serviceId
@@ -106,6 +81,7 @@ export default function POSPage() {
     setCart([]);
     setCustomer(null);
   };
+
   const processTransaction = async () => {
     if (!customer || cart.length === 0) return;
 
@@ -122,16 +98,15 @@ export default function POSPage() {
       tax,
       discount,
       total,
-      paymentMethod: 'cash', // Default to cash, can be changed
+      paymentMethod: 'cash',
       timestamp: new Date(),
       status: 'pending',
-    };    setTransactions(prev => [newTransaction, ...prev]);
+    };
+
+    setTransactions(prev => [newTransaction, ...prev]);
     clearCart();
-    
-    // Announce success to screen readers
+
     announce(`Transaction ${newTransaction.id} processed successfully for ${customer.name}. Total amount: $${total.toFixed(2)}`);
-    
-    // Show success message or redirect
     alert('Transaction processed successfully!');
   };
 
@@ -144,6 +119,7 @@ export default function POSPage() {
       </DashboardLayout>
     );
   }
+
   return (
     <DashboardLayout title="Point of Sale">
       <div className="space-y-4 sm:space-y-6">
@@ -163,7 +139,7 @@ export default function POSPage() {
           {/* Cart and Customer Section */}
           <div className="w-full xl:w-96 2xl:w-[400px] space-y-4 sm:space-y-6 order-first xl:order-last">
             <CustomerForm customer={customer} onCustomerChange={setCustomer} />
-            <ShoppingCart 
+            <ShoppingCart
               items={cart}
               customer={customer}
               onUpdateQuantity={updateQuantity}
@@ -172,9 +148,11 @@ export default function POSPage() {
               onProcessTransaction={processTransaction}
             />
           </div>
-        </div>        {/* Transaction History Section */}
+        </div>
+
+        {/* Transaction History Section */}
         <Card>
-          <div className="p-3 sm:p-4 lg:p-6" {...swipeHandlers}>
+          <div className="p-3 sm:p-4 lg:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-3 h-auto">
                 <TabsTrigger value="recent" className="text-xs sm:text-sm py-2">
@@ -190,66 +168,35 @@ export default function POSPage() {
                   <span className="sm:hidden">Done</span>
                 </TabsTrigger>
               </TabsList>
-              
-              {/* Add swipe indicator for mobile */}
-              <div className="sm:hidden flex justify-center mt-2 mb-4">
-                <div className="flex items-center space-x-2">
-                  <div className="flex space-x-1">
-                    {['recent', 'pending', 'completed'].map((tab) => (
-                      <div
-                        key={tab}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          activeTab === tab ? 'bg-blue-500' : 'bg-gray-300'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-xs text-gray-500">← Swipe to navigate →</p>
-                </div>
-              </div>
-              
-              {/* Add swipe indicator for mobile */}
-              <div className="sm:hidden flex justify-center mt-2 mb-4">
-                <div className="flex space-x-1">
-                  {['recent', 'pending', 'completed'].map((tab) => (
-                    <div
-                      key={tab}
-                      className={`w-2 h-2 rounded-full transition-colors ${
-                        activeTab === tab ? 'bg-blue-500' : 'bg-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <p className="text-xs text-gray-500 ml-2">Swipe to navigate</p>
-              </div>
-              
+
               <TabsContent value="recent" className="mt-4 sm:mt-6">
-                <TransactionHistory 
+                <TransactionHistory
                   transactions={transactions}
                   filter="all"
                 />
               </TabsContent>
               <TabsContent value="pending" className="mt-4 sm:mt-6">
-                <TransactionHistory 
+                <TransactionHistory
                   transactions={transactions.filter(t => t.status === 'pending' || t.status === 'in-progress')}
                   filter="pending"
                 />
               </TabsContent>
               <TabsContent value="completed" className="mt-4 sm:mt-6">
-                <TransactionHistory 
+                <TransactionHistory
                   transactions={transactions.filter(t => t.status === 'completed')}
                   filter="completed"
                 />
-              </TabsContent>            </Tabs>
+              </TabsContent>
+            </Tabs>
           </div>
         </Card>
-        
+
         {/* Accessibility Test Suite */}
-        <AccessibilityTestSuite 
+        <AccessibilityTestSuite
           isVisible={showA11yTests}
           onClose={() => setShowA11yTests(false)}
         />
-        
+
         {/* Floating Accessibility Button (Development Only) */}
         {process.env.NODE_ENV === 'development' && (
           <button
@@ -259,9 +206,9 @@ export default function POSPage() {
             title="Test Accessibility"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.5c-3.59 0-6.5-2.91-6.5-6.5S6.41 3.5 10 3.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"/>
-              <circle cx="10" cy="7" r="1"/>
-              <path d="M10 9c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1z"/>
+              <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.5c-3.59 0-6.5-2.91-6.5-6.5S6.41 3.5 10 3.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z" />
+              <circle cx="10" cy="7" r="1" />
+              <path d="M10 9c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1z" />
             </svg>
           </button>
         )}

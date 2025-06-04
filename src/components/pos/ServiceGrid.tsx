@@ -31,8 +31,8 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, onAddToCart 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const categories = Array.from(new Set(services.map(service => service.category)));
-  const filteredServices = selectedCategory === 'all' 
-    ? services 
+  const filteredServices = selectedCategory === 'all'
+    ? services
     : services.filter(service => service.category === selectedCategory);
 
   const servicesByCategory = categories.reduce((acc, category) => {
@@ -129,7 +129,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onAddToCart }) => {
                 {service.description}
               </p>
             </div>
-            <div 
+            <div
               className="w-3 h-3 sm:w-4 sm:h-4 rounded-full ml-2 flex-shrink-0"
               style={{ backgroundColor: service.color }}
             />

@@ -45,7 +45,7 @@ export const PieChart: React.FC<PieChartProps> = ({
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: function (context: any) {
             const label = context.label || '';
             const value = context.raw;
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
@@ -57,9 +57,9 @@ export const PieChart: React.FC<PieChartProps> = ({
     },
   };
 
-  return (    <div style={{ height: `${height}px` }}>
-      <Pie data={data} options={options} />
-    </div>
+  return (<div style={{ height: `${height}px` }}>
+    <Pie data={data} options={options} />
+  </div>
   );
 };
 
