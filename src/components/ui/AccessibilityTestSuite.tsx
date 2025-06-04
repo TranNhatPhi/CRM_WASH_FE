@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -35,7 +35,7 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
   const [tests, setTests] = useState<AccessibilityTest[]>([]);
   const [isRunning, setIsRunning] = useState(false);
 
-  const initialTests: AccessibilityTest[] = [
+  const initialTests = useMemo(() => [
     // Visual Tests
     {
       id: 'color-contrast',
@@ -127,11 +127,11 @@ export const AccessibilityTestSuite: React.FC<AccessibilityTestSuiteProps> = ({
       category: 'responsive',
       status: 'not-tested',
     },
-  ];
+  ] as AccessibilityTest[], []);
 
   useEffect(() => {
     setTests(initialTests);
-  }, []);
+  }, [initialTests]);
 
   const runAccessibilityTests = async () => {
     setIsRunning(true);
