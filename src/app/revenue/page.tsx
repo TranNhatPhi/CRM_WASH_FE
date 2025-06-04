@@ -147,7 +147,7 @@ export default function RevenuePage() {
                   </svg>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Target: {formatCurrency(3000000)}/day</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Target: {formatCurrency(182)}/day</p> {/* 3M VND -> 182 AUD */}
             </div>
           </Card>
         </div>
@@ -177,7 +177,7 @@ export default function RevenuePage() {
 
           <Card>
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Chi tiết chi phí</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Expense Details</h3>
               <div className="space-y-4">
                 {expenseData.map((expense, index) => (
                   <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -199,16 +199,15 @@ export default function RevenuePage() {
         {/* Recent Transactions */}
         <Card>
           <div className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Giao dịch gần đây</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Transactions</h3>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ngày</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Doanh thu</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số giao dịch</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Giá trị TB</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Xu hướng</th>
+                  <tr>                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenue</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Transactions</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Avg Value</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trend</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">

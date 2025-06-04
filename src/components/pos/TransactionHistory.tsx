@@ -150,140 +150,89 @@ const TransactionCard: React.FC<TransactionCardProps> = ({ transaction }) => {
   const StatusIcon = status.icon;
   const paymentMethod = paymentMethodConfig[transaction.paymentMethod];
   const PaymentIcon = paymentMethod.icon;
+
   return (
-    <Card className="hover:shadow-md transition-shadow duration-200">
-      <CardContent className="p-3 sm:p-4">
-        <div className="flex flex-col gap-3 sm:gap-4">
+    <Card className="hover:shadow-sm transition-shadow duration-200">
+      <CardContent className="p-2">
+        <div className="flex flex-col gap-2">
           {/* Transaction Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <h4 className="font-medium text-gray-900 dark:text-white text-xs">
                 {transaction.id}
               </h4>
-              <div className={`flex items-center px-2 py-1 rounded-full text-xs ${status.bg} ${status.border} border`}>
-                <StatusIcon className={`w-3 h-3 mr-1 ${status.color}`} />
-                <span className={status.color}>{status.label}</span>
+              <div className={`flex items-center px-1.5 py-0.5 rounded text-xs ${status.bg} ${status.border} border`}>
+                <StatusIcon className={`w-2 h-2 mr-1 ${status.color}`} />
+                <span className={`${status.color} text-xs`}>{status.label}</span>
               </div>
             </div>
-            <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-              <span className="sm:hidden">
-                {transaction.timestamp.toLocaleDateString()}
-              </span>
-              <span className="hidden sm:inline">
-                {transaction.timestamp.toLocaleDateString()} {transaction.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {transaction.timestamp.toLocaleDateString()}
             </div>
           </div>
 
-          {/* Customer Info */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+          {/* Customer Info - Compact */}
+          <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
             <div className="flex items-center min-w-0">
-              <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
+              <User className="w-3 h-3 mr-1 flex-shrink-0" />
               <span className="truncate">{transaction.customer.name}</span>
               {transaction.customer.isVIP && (
-                <Star className="w-3 h-3 ml-1 text-amber-500 flex-shrink-0" />
+                <Star className="w-2 h-2 ml-1 text-amber-500 flex-shrink-0" />
               )}
             </div>
             {transaction.customer.vehiclePlate && (
               <div className="flex items-center">
-                <Car className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <Car className="w-3 h-3 mr-1" />
                 <span>{transaction.customer.vehiclePlate}</span>
               </div>
             )}
-            <div className="flex items-center">
-              <PaymentIcon className={`w-3 h-3 sm:w-4 sm:h-4 mr-1 ${paymentMethod.color}`} />
-              <span>{paymentMethod.label}</span>
-            </div>
           </div>
 
-          {/* Services and Summary Row */}
-          <div className="flex flex-col lg:flex-row lg:justify-between gap-3">
-            {/* Services */}
-            <div className="flex-1 space-y-1">
-              {transaction.items.map((item) => (
-                <div key={item.service.id} className="flex items-center justify-between text-xs sm:text-sm">
-                  <div className="flex items-center min-w-0">
-                    <div
-                      className="w-2 h-2 rounded-full mr-2 flex-shrink-0"
-                      style={{ backgroundColor: item.service.color }}
-                    />
-                    <span className="text-gray-700 dark:text-gray-300 truncate">
-                      {item.service.name}
-                      {item.quantity > 1 && (
-                        <span className="text-gray-500 dark:text-gray-400 ml-1">
-                          × {item.quantity}
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  <span className="text-gray-600 dark:text-gray-400 ml-2 flex-shrink-0">
-                    {formatCurrency(item.subtotal)}
+          {/* Services - Compact List */}
+          <div className="space-y-0.5">
+            {transaction.items.slice(0, 2).map((item) => (
+              <div key={item.service.id} className="flex items-center justify-between text-xs">
+                <div className="flex items-center min-w-0">
+                  <div
+                    className="w-1.5 h-1.5 rounded-full mr-2 flex-shrink-0"
+                    style={{ backgroundColor: item.service.color }}
+                  />
+                  <span className="text-gray-700 dark:text-gray-300 truncate">
+                    {item.service.name}
+                    {item.quantity > 1 && (
+                      <span className="text-gray-500 dark:text-gray-400 ml-1">
+                        × {item.quantity}
+                      </span>
+                    )}
                   </span>
                 </div>
-              ))}
-            </div>
-
-            {/* Transaction Summary */}
-            <div className="lg:text-right lg:min-w-[120px] pt-2 lg:pt-0 border-t lg:border-t-0 border-gray-200 dark:border-slate-700">
-              <div className="space-y-1 text-xs sm:text-sm">
-                {transaction.discount > 0 && (
-                  <div className="text-green-600 dark:text-green-400">
-                    <span className="sm:hidden">VIP: -{formatCurrency(transaction.discount)}</span>
-                    <span className="hidden sm:inline">VIP Discount: -{formatCurrency(transaction.discount)}</span>
-                  </div>
-                )}
-                <div className="text-gray-600 dark:text-gray-400">
-                  Tax: {formatCurrency(transaction.tax)}
-                </div>
-                <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                  {formatCurrency(transaction.total)}
-                </div>
+                <span className="text-gray-600 dark:text-gray-400 ml-2 flex-shrink-0">
+                  {formatCurrency(item.subtotal)}
+                </span>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap lg:justify-end mt-2 sm:mt-3 gap-1 sm:gap-2">
-                {transaction.status === 'pending' && (
-                  <>
-                    <Button size="sm" variant="outline" className="text-xs px-2 sm:px-3">
-                      Start
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-xs px-2 sm:px-3 text-red-600 hover:text-red-700">
-                      Cancel
-                    </Button>
-                  </>
-                )}
-                {transaction.status === 'in-progress' && (
-                  <Button size="sm" className="text-xs px-2 sm:px-3">
-                    Complete
-                  </Button>
-                )}
-                <Button size="sm" variant="outline" className="text-xs px-2 sm:px-3">
-                  <Receipt className="w-3 h-3 mr-1" />
-                  <span className="hidden sm:inline">Receipt</span>
-                  <span className="sm:hidden">Print</span>
-                </Button>
-              </div>            </div>
+            ))}
+            {transaction.items.length > 2 && (
+              <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                +{transaction.items.length - 2} more items
+              </div>
+            )}
+          </div>          {/* Summary - Single Line */}
+          <div className="flex items-center justify-between border-t border-gray-200 dark:border-slate-700 pt-1">
+            <div className="flex items-center gap-2 text-xs">
+              <PaymentIcon className={`w-3 h-3 ${paymentMethod.color}`} />
+              <span className="text-gray-600 dark:text-gray-400">{paymentMethod.label}</span>
+              {transaction.discount > 0 && (
+                <span className="text-green-600 dark:text-green-400">
+                  -{formatCurrency(transaction.discount)}
+                </span>
+              )}
+            </div>
+            <div className="text-sm font-bold text-gray-900 dark:text-white">
+              {formatCurrency(transaction.total)}
+            </div>
           </div>
         </div>
-
-        {/* Notes */}
-        {transaction.notes && (
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
-            <p className="text-xs text-gray-600 dark:text-gray-400">
-              <strong>Notes:</strong> {transaction.notes}
-            </p>
-          </div>
-        )}
-
-        {/* Estimated Completion */}
-        {transaction.estimatedCompletion && transaction.status !== 'completed' && (
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
-            <p className="text-xs text-gray-600 dark:text-gray-400">
-              <Clock className="w-3 h-3 inline mr-1" />
-              <strong>Est. Completion:</strong> {transaction.estimatedCompletion.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </p>
-          </div>
-        )}</CardContent>
+      </CardContent>
     </Card>
   );
 };

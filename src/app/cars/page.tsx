@@ -6,20 +6,59 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { generateCarData } from '@/lib/data';
 import { formatCurrency, formatDate } from '@/utils';
+import { Vehicle, VehicleWashStatus } from '@/types';
 
 export default function CarsPage() {
   const [cars] = useState(generateCarData());
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [selectedWashStatus, setSelectedWashStatus] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1); const itemsPerPage = 10;
+
+  // Utility functions for wash status
+  const getWashStatusDisplay = (status: VehicleWashStatus): string => {
+    const statusMap: Record<VehicleWashStatus, string> = {
+      pending: 'Pending',
+      started: 'Started',
+      late: 'Late',
+      finished: 'Finished',
+      unpaid: 'Unpaid',
+      collected: 'Collected',
+      cancelled: 'Cancelled'
+    };
+    return statusMap[status as VehicleWashStatus] || status;
+  };
+
+  const getWashStatusColor = (status: VehicleWashStatus): string => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'started': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'late': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      case 'finished': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'unpaid': return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
+      case 'collected': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+      case 'cancelled': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
+    }
+  };
+
+  const isWashStatusVisible = (status: VehicleWashStatus): boolean => {
+    return !['collected', 'cancelled'].includes(status);
+  };
+
+  const getVisibleWashStatuses = (): VehicleWashStatus[] => {
+    return ['pending', 'started', 'late', 'finished', 'unpaid'];
+  };
 
   const filteredCars = cars.filter(car => {
     const matchesSearch = car.licensePlate.toLowerCase().includes(searchTerm.toLowerCase()) ||
       car.ownerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       car.brand.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === 'All' || car.status === selectedStatus;
-    return matchesSearch && matchesStatus;
+    const matchesWashStatus = selectedWashStatus === 'All' ||
+      (selectedWashStatus === 'None' && !car.washStatus) ||
+      car.washStatus === selectedWashStatus;
+    return matchesSearch && matchesStatus && matchesWashStatus;
   });
 
   const totalPages = Math.ceil(filteredCars.length / itemsPerPage);
@@ -49,8 +88,8 @@ export default function CarsPage() {
           </svg>
           Add New Vehicle
         </Button>
-      </div>        {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      </div>      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <Card>
           <div className="p-6">
             <div className="flex items-center justify-between">
@@ -89,19 +128,39 @@ export default function CarsPage() {
           <div className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">New Customers This Month</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Active Washes</p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {cars.filter(car => car.status === 'New').length}
+                  {cars.filter(car => car.washStatus && ['pending', 'started', 'late'].includes(car.washStatus)).length}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
             </div>
           </div>
-        </Card>          <Card>
+        </Card>
+
+        <Card>
+          <div className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Needs Payment</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {cars.filter(car => car.washStatus && ['finished', 'unpaid'].includes(car.washStatus)).length}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card>
           <div className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -110,9 +169,9 @@ export default function CarsPage() {
                   {formatCurrency(cars.reduce((sum, car) => sum + car.totalSpent, 0) / cars.length)}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
             </div>
@@ -136,9 +195,7 @@ export default function CarsPage() {
                 <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-              </div>
-
-              <select
+              </div>              <select
                 className="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
@@ -148,6 +205,16 @@ export default function CarsPage() {
                 <option value="VIP">VIP</option>
                 <option value="New">New</option>
                 <option value="Inactive">Inactive</option>
+              </select>              <select
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={selectedWashStatus}
+                onChange={(e) => setSelectedWashStatus(e.target.value)}
+              >
+                <option value="All">All Wash Status</option>
+                <option value="None">No Wash</option>
+                {getVisibleWashStatuses().map(status => (
+                  <option key={status} value={status}>{getWashStatusDisplay(status)}</option>
+                ))}
               </select>
             </div>
 
@@ -170,12 +237,14 @@ export default function CarsPage() {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Last Wash
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                </th>                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Statistics
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Wash Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
@@ -203,11 +272,36 @@ export default function CarsPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900 dark:text-white">{car.totalWashes} times</div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">{formatCurrency(car.totalSpent)}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  </td>                  <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(car.status)}`}>
                       {car.status}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {car.washStatus ? (
+                      <div className="space-y-1">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getWashStatusColor(car.washStatus)}`}>
+                          {getWashStatusDisplay(car.washStatus)}
+                        </span>                        {car.washStatusUpdated && (
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {new Date(car.washStatusUpdated).toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </div>
+                        )}
+                        {car.estimatedCompletion && ['pending', 'started'].includes(car.washStatus) && (
+                          <div className="text-xs text-blue-600 dark:text-blue-400">
+                            ETA: {new Date(car.estimatedCompletion).toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-400 dark:text-gray-500">No active wash</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">

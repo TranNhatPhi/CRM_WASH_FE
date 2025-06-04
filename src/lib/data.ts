@@ -1,45 +1,45 @@
-import { DashboardStats, HourlyStats, ComparisonData, WashPackage, LaborData, MonthlyComparison, POSService, POSTransaction, CartItem } from '@/types';
+import { DashboardStats, HourlyStats, ComparisonData, WashPackage, LaborData, MonthlyComparison, POSService, POSTransaction, CartItem, Vehicle } from '@/types';
 
 // Mock data generator for development
 export const mockDashboardStats: DashboardStats = {
   totalCars: 1273,
-  totalRevenue: 45678900,
-  averageRevenue: 35875,
+  totalRevenue: 2768.72, // 45678900 VND -> AUD
+  averageRevenue: 2.17, // 35875 VND -> AUD
   activeStations: 6,
 };
 
 export const mockHourlyStats: HourlyStats[] = [
-  { hour: '06:00', carsPerHour: 12, grossPerHour: 450000, grossPerCarHour: 37500 },
-  { hour: '07:00', carsPerHour: 25, grossPerHour: 875000, grossPerCarHour: 35000 },
-  { hour: '08:00', carsPerHour: 45, grossPerHour: 1575000, grossPerCarHour: 35000 },
-  { hour: '09:00', carsPerHour: 38, grossPerHour: 1330000, grossPerCarHour: 35000 },
-  { hour: '10:00', carsPerHour: 52, grossPerHour: 1820000, grossPerCarHour: 35000 },
-  { hour: '11:00', carsPerHour: 48, grossPerHour: 1680000, grossPerCarHour: 35000 },
-  { hour: '12:00', carsPerHour: 65, grossPerHour: 2275000, grossPerCarHour: 35000 },
-  { hour: '13:00', carsPerHour: 58, grossPerHour: 2030000, grossPerCarHour: 35000 },
-  { hour: '14:00', carsPerHour: 42, grossPerHour: 1470000, grossPerCarHour: 35000 },
-  { hour: '15:00', carsPerHour: 35, grossPerHour: 1225000, grossPerCarHour: 35000 },
-  { hour: '16:00', carsPerHour: 28, grossPerHour: 980000, grossPerCarHour: 35000 },
-  { hour: '17:00', carsPerHour: 22, grossPerHour: 770000, grossPerCarHour: 35000 },
+  { hour: '06:00', carsPerHour: 12, grossPerHour: 27.27, grossPerCarHour: 2.27 },
+  { hour: '07:00', carsPerHour: 25, grossPerHour: 53.03, grossPerCarHour: 2.12 },
+  { hour: '08:00', carsPerHour: 45, grossPerHour: 95.45, grossPerCarHour: 2.12 },
+  { hour: '09:00', carsPerHour: 38, grossPerHour: 80.61, grossPerCarHour: 2.12 },
+  { hour: '10:00', carsPerHour: 52, grossPerHour: 110.30, grossPerCarHour: 2.12 },
+  { hour: '11:00', carsPerHour: 48, grossPerHour: 101.82, grossPerCarHour: 2.12 },
+  { hour: '12:00', carsPerHour: 65, grossPerHour: 137.88, grossPerCarHour: 2.12 },
+  { hour: '13:00', carsPerHour: 58, grossPerHour: 123.03, grossPerCarHour: 2.12 },
+  { hour: '14:00', carsPerHour: 42, grossPerHour: 89.09, grossPerCarHour: 2.12 },
+  { hour: '15:00', carsPerHour: 35, grossPerHour: 74.24, grossPerCarHour: 2.12 },
+  { hour: '16:00', carsPerHour: 28, grossPerHour: 59.39, grossPerCarHour: 2.12 },
+  { hour: '17:00', carsPerHour: 22, grossPerHour: 46.67, grossPerCarHour: 2.12 },
 ];
 
 export const mockComparisonData: ComparisonData[] = [
-  { date: '06:00', carsYesterday: 15, carsToday: 12, grossYesterday: 525000, grossToday: 450000 },
-  { date: '07:00', carsYesterday: 22, carsToday: 25, grossYesterday: 770000, grossToday: 875000 },
-  { date: '08:00', carsYesterday: 40, carsToday: 45, grossYesterday: 1400000, grossToday: 1575000 },
-  { date: '09:00', carsYesterday: 35, carsToday: 38, grossYesterday: 1225000, grossToday: 1330000 },
-  { date: '10:00', carsYesterday: 48, carsToday: 52, grossYesterday: 1680000, grossToday: 1820000 },
-  { date: '11:00', carsYesterday: 45, carsToday: 48, grossYesterday: 1575000, grossToday: 1680000 },
-  { date: '12:00', carsYesterday: 60, carsToday: 65, grossYesterday: 2100000, grossToday: 2275000 },
+  { date: '06:00', carsYesterday: 15, carsToday: 12, grossYesterday: 31.82, grossToday: 27.27 },
+  { date: '07:00', carsYesterday: 22, carsToday: 25, grossYesterday: 46.67, grossToday: 53.03 },
+  { date: '08:00', carsYesterday: 40, carsToday: 45, grossYesterday: 84.85, grossToday: 95.45 },
+  { date: '09:00', carsYesterday: 35, carsToday: 38, grossYesterday: 74.24, grossToday: 80.61 },
+  { date: '10:00', carsYesterday: 48, carsToday: 52, grossYesterday: 101.82, grossToday: 110.30 },
+  { date: '11:00', carsYesterday: 45, carsToday: 48, grossYesterday: 95.45, grossToday: 101.82 },
+  { date: '12:00', carsYesterday: 60, carsToday: 65, grossYesterday: 127.27, grossToday: 137.88 },
 ];
 
 export const mockWashPackages: WashPackage[] = [
-  { id: '1', name: 'BASIC PACKAGE', price: 25000, color: '#22C55E', percentage: 34.5 },
-  { id: '2', name: 'SEMI CLEAN', price: 35000, color: '#3B82F6', percentage: 22.3 },
-  { id: '3', name: 'PROTECT', price: 45000, color: '#F59E0B', percentage: 15.8 },
-  { id: '4', name: 'WASH & PROTECT', price: 55000, color: '#EF4444', percentage: 12.1 },
-  { id: '5', name: 'WAX & SUPER CLEAN', price: 75000, color: '#8B5CF6', percentage: 8.7 },
-  { id: '6', name: 'EXPRESS WAX', price: 65000, color: '#06B6D4', percentage: 6.6 },
+  { id: '1', name: 'BASIC PACKAGE', price: 1.52, color: '#22C55E', percentage: 34.5 }, // 25000 VND -> AUD
+  { id: '2', name: 'SEMI CLEAN', price: 2.12, color: '#3B82F6', percentage: 22.3 }, // 35000 VND -> AUD
+  { id: '3', name: 'PROTECT', price: 2.73, color: '#F59E0B', percentage: 15.8 }, // 45000 VND -> AUD
+  { id: '4', name: 'WASH & PROTECT', price: 3.33, color: '#EF4444', percentage: 12.1 }, // 55000 VND -> AUD
+  { id: '5', name: 'WAX & SUPER CLEAN', price: 4.55, color: '#8B5CF6', percentage: 8.7 }, // 75000 VND -> AUD
+  { id: '6', name: 'EXPRESS WAX', price: 3.94, color: '#06B6D4', percentage: 6.6 }, // 65000 VND -> AUD
 ];
 
 export const mockLaborData: LaborData[] = [
@@ -50,13 +50,13 @@ export const mockLaborData: LaborData[] = [
 ];
 
 export const mockMonthlyComparison: MonthlyComparison[] = [
-  { month: 'Mon', carsFeb: 450, carsMarch: 520, grossFeb: 15750000, grossMarch: 18200000 },
-  { month: 'Tue', carsFeb: 380, carsMarch: 420, grossFeb: 13300000, grossMarch: 14700000 },
-  { month: 'Wed', carsFeb: 520, carsMarch: 580, grossFeb: 18200000, grossMarch: 20300000 },
-  { month: 'Thu', carsFeb: 480, carsMarch: 540, grossFeb: 16800000, grossMarch: 18900000 },
-  { month: 'Fri', carsFeb: 420, carsMarch: 460, grossFeb: 14700000, grossMarch: 16100000 },
-  { month: 'Sat', carsFeb: 380, carsMarch: 410, grossFeb: 13300000, grossMarch: 14350000 },
-  { month: 'Sun', carsFeb: 320, carsMarch: 350, grossFeb: 11200000, grossMarch: 12250000 },
+  { month: 'Mon', carsFeb: 450, carsMarch: 520, grossFeb: 954.55, grossMarch: 1103.03 },
+  { month: 'Tue', carsFeb: 380, carsMarch: 420, grossFeb: 806.06, grossMarch: 890.91 },
+  { month: 'Wed', carsFeb: 520, carsMarch: 580, grossFeb: 1103.03, grossMarch: 1230.30 },
+  { month: 'Thu', carsFeb: 480, carsMarch: 540, grossFeb: 1018.18, grossMarch: 1145.45 },
+  { month: 'Fri', carsFeb: 420, carsMarch: 460, grossFeb: 890.91, grossMarch: 975.76 },
+  { month: 'Sat', carsFeb: 380, carsMarch: 410, grossFeb: 806.06, grossMarch: 869.70 },
+  { month: 'Sun', carsFeb: 320, carsMarch: 350, grossFeb: 678.79, grossMarch: 742.42 },
 ];
 
 // Chart colors
@@ -114,7 +114,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'basic-1',
     name: 'Express Wash',
-    price: 25000,
+    price: 1.52, // 25000 VND -> AUD
     duration: 15,
     description: 'Quick exterior wash with soap and rinse',
     category: 'basic',
@@ -123,7 +123,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'basic-2',
     name: 'Basic Package',
-    price: 35000,
+    price: 2.12, // 35000 VND -> AUD
     duration: 25,
     description: 'Exterior wash, tire cleaning, and interior vacuum',
     category: 'basic',
@@ -133,7 +133,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'premium-1',
     name: 'Premium Wash',
-    price: 55000,
+    price: 3.33, // 55000 VND -> AUD
     duration: 35,
     description: 'Full wash, wax application, interior cleaning, and tire shine',
     category: 'premium',
@@ -142,7 +142,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'premium-2',
     name: 'Semi Clean',
-    price: 45000,
+    price: 2.73, // 45000 VND -> AUD
     duration: 30,
     description: 'Exterior wash, basic interior clean, dashboard wipe',
     category: 'premium',
@@ -152,7 +152,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'deluxe-1',
     name: 'Detail Wash',
-    price: 85000,
+    price: 5.15, // 85000 VND -> AUD
     duration: 60,
     description: 'Complete detailing, leather treatment, engine bay cleaning',
     category: 'deluxe',
@@ -161,7 +161,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'deluxe-2',
     name: 'Supreme Package',
-    price: 120000,
+    price: 7.27, // 120000 VND -> AUD
     duration: 90,
     description: 'Ultimate care package with ceramic coating and full detailing',
     category: 'deluxe',
@@ -171,7 +171,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'addon-1',
     name: 'Wax Protection',
-    price: 25000,
+    price: 1.52, // 25000 VND -> AUD
     duration: 10,
     description: 'Premium wax application for paint protection',
     category: 'addon',
@@ -180,7 +180,7 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'addon-2',
     name: 'Interior Protection',
-    price: 35000,
+    price: 2.12, // 35000 VND -> AUD
     duration: 15,
     description: 'Fabric protection and leather conditioning',
     category: 'addon',
@@ -189,18 +189,111 @@ export const mockPOSServices: POSService[] = [
   {
     id: 'addon-3',
     name: 'Air Freshener',
-    price: 15000,
+    price: 0.91, // 15000 VND -> AUD
     duration: 5,
     description: 'Premium car air freshener application',
     category: 'addon',
     color: '#F59E0B',
-  },
-  {
+  }, {
     id: 'addon-4',
     name: 'Tire Black',
-    price: 20000,
+    price: 1.21, // 20000 VND -> AUD
     duration: 10,
     description: 'Tire shine and protection treatment',
+    category: 'addon',
+    color: '#F59E0B',
+  },
+  // Premium Services Extended
+  {
+    id: 'premium-3',
+    name: 'Complete Wash',
+    price: 4.54, // 75000 VND -> AUD
+    duration: 45,
+    description: 'Full service wash with interior and exterior detailing',
+    category: 'premium',
+    color: '#3B82F6',
+  },
+  {
+    id: 'premium-4',
+    name: 'VIP Wash',
+    price: 6.06, // 100000 VND -> AUD
+    duration: 50,
+    description: 'Premium wash with hand drying and premium products',
+    category: 'premium',
+    color: '#3B82F6',
+  },
+  // Basic Services Extended
+  {
+    id: 'basic-3',
+    name: 'Quick Rinse',
+    price: 0.91, // 15000 VND -> AUD
+    duration: 10,
+    description: 'Quick water rinse and basic exterior clean',
+    category: 'basic',
+    color: '#10B981',
+  },
+  {
+    id: 'basic-4',
+    name: 'Economy Wash',
+    price: 1.82, // 30000 VND -> AUD
+    duration: 20,
+    description: 'Budget-friendly wash with soap and basic rinse',
+    category: 'basic',
+    color: '#10B981',
+  },
+  // Deluxe Services Extended
+  {
+    id: 'deluxe-3',
+    name: 'Luxury Package',
+    price: 9.09, // 150000 VND -> AUD
+    duration: 120,
+    description: 'Ultimate luxury treatment with premium wax and interior leather care',
+    category: 'deluxe',
+    color: '#8B5CF6',
+  },
+  {
+    id: 'deluxe-4',
+    name: 'Elite Detail',
+    price: 12.12, // 200000 VND -> AUD
+    duration: 180,
+    description: 'Professional detailing with paint correction and ceramic coating',
+    category: 'deluxe',
+    color: '#8B5CF6',
+  },
+  // Additional Add-on Services
+  {
+    id: 'addon-5',
+    name: 'Paint Protection',
+    price: 3.03, // 50000 VND -> AUD
+    duration: 20,
+    description: 'Advanced paint protection with ceramic coating',
+    category: 'addon',
+    color: '#F59E0B',
+  },
+  {
+    id: 'addon-6',
+    name: 'Engine Clean',
+    price: 2.42, // 40000 VND -> AUD
+    duration: 25,
+    description: 'Engine bay cleaning and degreasing',
+    category: 'addon',
+    color: '#F59E0B',
+  },
+  {
+    id: 'addon-7',
+    name: 'Undercarriage Wash',
+    price: 1.82, // 30000 VND -> AUD
+    duration: 15,
+    description: 'High-pressure undercarriage cleaning',
+    category: 'addon',
+    color: '#F59E0B',
+  },
+  {
+    id: 'addon-8',
+    name: 'Headlight Restoration',
+    price: 3.64, // 60000 VND -> AUD
+    duration: 30,
+    description: 'Professional headlight cleaning and restoration',
     category: 'addon',
     color: '#F59E0B',
   },
@@ -262,7 +355,7 @@ export const generateMonthlyRevenueData = () => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return months.map(month => ({
     month,
-    revenue: Math.floor(Math.random() * 50000000) + 20000000, // 20-70M VND
+    revenue: Math.floor(Math.random() * 3030) + 1212, // 20-70M VND -> 1212-4242 AUD
   }));
 };
 
@@ -295,6 +388,9 @@ export const generateHourlyCustomerData = () => {
 export const generateCarData = () => {
   const carTypes = ['Sedan', 'SUV', 'Hatchback', 'Pickup', 'Van', 'Luxury'];
   const brands = ['Toyota', 'Honda', 'Mazda', 'Ford', 'Hyundai', 'KIA', 'BMW', 'Mercedes'];
+  const washStatuses: ('pending' | 'started' | 'late' | 'finished' | 'unpaid' | 'collected' | 'cancelled')[] = [
+    'pending', 'started', 'late', 'finished', 'unpaid', 'collected', 'cancelled'
+  ];
 
   return Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
@@ -309,6 +405,10 @@ export const generateCarData = () => {
     totalWashes: Math.floor(Math.random() * 50) + 1,
     totalSpent: Math.floor(Math.random() * 10000000) + 500000,
     status: ['Active', 'VIP', 'New', 'Inactive'][Math.floor(Math.random() * 4)],
+    washStatus: i < 35 ? washStatuses[Math.floor(Math.random() * washStatuses.length)] : undefined,
+    washStatusUpdated: i < 35 ? new Date(Date.now() - Math.floor(Math.random() * 6) * 60 * 60 * 1000) : undefined,
+    estimatedCompletion: i < 20 ? new Date(Date.now() + Math.floor(Math.random() * 4) * 60 * 60 * 1000) : undefined,
+    currentServiceId: i < 20 ? `service-${Math.floor(Math.random() * 10) + 1}` : undefined,
   }));
 };
 
@@ -325,7 +425,7 @@ export const generateStaffData = () => {
     phone: `09${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`,
     email: `employee${i + 1}@company.com`,
     hireDate: new Date(Date.now() - Math.floor(Math.random() * 365) * 24 * 60 * 60 * 1000),
-    salary: Math.floor(Math.random() * 10000000) + 8000000,
+    salary: Math.floor(Math.random() * 606) + 485, // 8-18M VND -> 485-1091 AUD
     performance: Math.floor(Math.random() * 40) + 60, // 60-100%
     status: ['Working', 'On Leave', 'Inactive'][Math.floor(Math.random() * 3)],
     tasksCompleted: Math.floor(Math.random() * 100) + 50,
@@ -341,11 +441,11 @@ export const generateRevenueData = () => {
     date.setDate(date.getDate() - (29 - i));
     return {
       date: date.toISOString().split('T')[0],
-      revenue: Math.floor(Math.random() * 5000000) + 1000000,
+      revenue: Math.floor(Math.random() * 303) + 61, // 1-6M VND -> 61-364 AUD
       transactions: Math.floor(Math.random() * 100) + 20,
       services: services.map(service => ({
         name: service,
-        revenue: Math.floor(Math.random() * 1000000) + 200000,
+        revenue: Math.floor(Math.random() * 61) + 12, // 200K-1.2M VND -> 12-73 AUD
         count: Math.floor(Math.random() * 30) + 5,
       })),
     };
@@ -355,32 +455,32 @@ export const generateRevenueData = () => {
 };
 
 export const generateExpenseData = () => [
-  { category: 'Personnel', amount: 45000000, percentage: 35 },
-  { category: 'Supplies', amount: 25000000, percentage: 20 },
-  { category: 'Utilities', amount: 15000000, percentage: 12 },
-  { category: 'Maintenance', amount: 12000000, percentage: 10 },
-  { category: 'Marketing', amount: 8000000, percentage: 6 },
-  { category: 'Other', amount: 22000000, percentage: 17 },
+  { category: 'Personnel', amount: 2727.27, percentage: 35 }, // 45M VND -> AUD
+  { category: 'Supplies', amount: 1515.15, percentage: 20 }, // 25M VND -> AUD
+  { category: 'Utilities', amount: 909.09, percentage: 12 }, // 15M VND -> AUD
+  { category: 'Maintenance', amount: 727.27, percentage: 10 }, // 12M VND -> AUD
+  { category: 'Marketing', amount: 484.85, percentage: 6 }, // 8M VND -> AUD
+  { category: 'Other', amount: 1333.33, percentage: 17 }, // 22M VND -> AUD
 ];
 
 // Mock data for Reports page
 export const generateReportData = () => ({
   daily: {
     customers: Math.floor(Math.random() * 200) + 100,
-    revenue: Math.floor(Math.random() * 10000000) + 5000000,
-    averageTicket: Math.floor(Math.random() * 200000) + 100000,
+    revenue: Math.floor(Math.random() * 606) + 303, // 5-15M VND -> 303-909 AUD
+    averageTicket: Math.floor(Math.random() * 12) + 6, // 100-300K VND -> 6-18 AUD
     efficiency: Math.floor(Math.random() * 30) + 70,
   },
   weekly: {
     customers: Math.floor(Math.random() * 1000) + 500,
-    revenue: Math.floor(Math.random() * 50000000) + 25000000,
-    averageTicket: Math.floor(Math.random() * 200000) + 100000,
+    revenue: Math.floor(Math.random() * 3030) + 1515, // 25-75M VND -> 1515-4545 AUD
+    averageTicket: Math.floor(Math.random() * 12) + 6, // 100-300K VND -> 6-18 AUD
     efficiency: Math.floor(Math.random() * 30) + 70,
   },
   monthly: {
     customers: Math.floor(Math.random() * 4000) + 2000,
-    revenue: Math.floor(Math.random() * 200000000) + 100000000,
-    averageTicket: Math.floor(Math.random() * 200000) + 100000,
+    revenue: Math.floor(Math.random() * 12121) + 6061, // 100-300M VND -> 6061-18182 AUD
+    averageTicket: Math.floor(Math.random() * 12) + 6, // 100-300K VND -> 6-18 AUD
     efficiency: Math.floor(Math.random() * 30) + 70,
   },
 });

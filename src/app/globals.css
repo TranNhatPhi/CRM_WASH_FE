@@ -87,6 +87,44 @@ body {
   background: #9ca3af;
 }
 
+/* Custom scrollbar styles for POS interface */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #4B5563 #1F2937;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #1F2937;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #4B5563;
+  border-radius: 4px;
+  border: 1px solid #1F2937;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
+
+.scrollbar-track-gray-800::-webkit-scrollbar-track {
+  background: #1F2937;
+}
+
+.scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+  background: #4B5563;
+}
+
+.scrollbar-thumb-gray-500::-webkit-scrollbar-thumb {
+  background: #6B7280;
+}
+
 /* Chart container styles */
 .chart-container {
   position: relative;
@@ -102,4 +140,102 @@ body {
 .dashboard-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* POS specific animations */
+@keyframes cart-item-add {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cart-item-enter {
+  animation: cart-item-add 0.3s ease-out;
+}
+
+/* Smooth scroll for better user experience */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Enhanced hover effects for buttons */
+.btn-hover-scale:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* Loading animation for checkout */
+@keyframes pulse-checkout {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.checkout-loading {
+  animation: pulse-checkout 2s infinite;
+}
+
+/* Custom utilities for POS interface */
+@layer utilities {
+  .h-26 {
+    height: 6.5rem;
+    /* 104px */
+  }
+
+  .h-32 {
+    height: 8rem;
+    /* 128px */
+  }
+
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .word-break-all {
+    word-break: break-all;
+  }
+
+  .hyphens-auto {
+    hyphens: auto;
+  }
+
+  /* Better text fitting for POS buttons */
+  .service-button-text {
+    font-size: 0.65rem;
+    line-height: 0.8rem;
+    word-break: break-word;
+    hyphens: auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
 }

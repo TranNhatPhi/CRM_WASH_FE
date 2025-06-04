@@ -224,10 +224,9 @@ export const a11y = {
   generateId: (prefix: string = 'element') => {
     return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
   },
-
   // Format currency for screen readers
   formatCurrencyForScreenReader: (amount: number) => {
-    return `${amount} dollars`;
+    return `${amount} Australian dollars`;
   },
 
   // Format time for screen readers

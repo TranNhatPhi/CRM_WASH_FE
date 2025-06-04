@@ -118,7 +118,7 @@ export interface POSService {
   price: number;
   duration: number; // in minutes
   description: string;
-  category: 'basic' | 'premium' | 'deluxe' | 'addon';
+  category: 'basic' | 'premium' | 'deluxe' | 'addon' | 'wash' | 'detailing' | 'protection' | 'maintenance';
   color: string;
   image?: string;
 }
@@ -136,6 +136,8 @@ export interface POSCustomer {
   email?: string;
   vehiclePlate?: string;
   isVIP?: boolean;
+  totalVisits?: number;
+  loyaltyPoints?: number;
 }
 
 export interface POSTransaction {
@@ -151,4 +153,34 @@ export interface POSTransaction {
   status: 'pending' | 'in-progress' | 'completed' | 'cancelled';
   estimatedCompletion?: Date;
   notes?: string;
+}
+
+// Vehicle Wash Status Types
+export type VehicleWashStatus =
+  | 'pending'     // Pending - Waiting
+  | 'started'     // Started - In progress
+  | 'late'        // Late - Overdue
+  | 'finished'    // Finished - Completed
+  | 'unpaid'      // Unpaid - Payment pending
+  | 'collected'   // Collected - Vehicle picked up (hidden)
+  | 'cancelled';  // Cancelled - Service cancelled (hidden)
+
+// Vehicle Management Types
+export interface Vehicle {
+  id: number;
+  licensePlate: string;
+  brand: string;
+  model: string;
+  type: string;
+  color: string;
+  ownerName: string;
+  phone: string;
+  lastWash: Date;
+  totalWashes: number;
+  totalSpent: number;
+  status: 'Active' | 'VIP' | 'New' | 'Inactive';
+  washStatus?: VehicleWashStatus;
+  washStatusUpdated?: Date;
+  estimatedCompletion?: Date;
+  currentServiceId?: string;
 }

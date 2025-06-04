@@ -8,10 +8,15 @@ import { useTheme } from '@/contexts/ThemeContext';
 interface HeaderProps {
   onMenuClick: () => void;
   title?: string;
+  isFullscreen?: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onMenuClick, title = 'Dashboard' }) => {
+export const Header: React.FC<HeaderProps> = ({ onMenuClick, title = 'Dashboard', isFullscreen = false }) => {
   const { theme, toggleTheme } = useTheme();
+
+  if (isFullscreen) {
+    return null; // Hide header completely in fullscreen mode
+  }
 
   return (
     <header className="bg-white dark:bg-slate-900 shadow-sm border-b border-gray-200 dark:border-slate-700">

@@ -200,7 +200,7 @@ export default function DashboardPage() {
                     </div>
                     <div>
                       <p className="text-2xl font-bold text-green-600">
-                        {formatCurrency(laborData.length * 25000 * 8)}
+                        {formatCurrency(laborData.length * 1.52 * 8)} {/* 25000 VND -> 1.52 AUD */}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Labor cost</p>
                     </div>

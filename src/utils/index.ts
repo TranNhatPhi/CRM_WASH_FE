@@ -5,14 +5,14 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('vi-VN', {
+  return new Intl.NumberFormat('en-AU', {
     style: 'currency',
-    currency: 'VND',
+    currency: 'AUD',
   }).format(amount);
 }
 
 export function formatNumber(num: number): string {
-  return new Intl.NumberFormat('vi-VN').format(num);
+  return new Intl.NumberFormat('en-US').format(num);
 }
 
 export function formatPercentage(value: number): string {
@@ -20,14 +20,14 @@ export function formatPercentage(value: number): string {
 }
 
 export function formatTime(date: Date): string {
-  return new Intl.DateTimeFormat('vi-VN', {
+  return new Intl.DateTimeFormat('en-US', {
     hour: '2-digit',
     minute: '2-digit',
   }).format(date);
 }
 
 export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('vi-VN', {
+  return new Intl.DateTimeFormat('en-US', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -104,4 +104,15 @@ export function throttle<T extends (...args: any[]) => any>(
       setTimeout(() => (inThrottle = false), limit);
     }
   };
+}
+
+// Currency conversion utilities
+const AUD_TO_VND_RATE = 16500;
+
+export function convertVNDToAUD(vndAmount: number): number {
+  return Math.round((vndAmount / AUD_TO_VND_RATE) * 100) / 100;
+}
+
+export function convertAUDToVND(audAmount: number): number {
+  return Math.round(audAmount * AUD_TO_VND_RATE);
 }
