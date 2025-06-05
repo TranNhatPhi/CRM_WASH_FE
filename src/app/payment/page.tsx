@@ -26,16 +26,16 @@ function PaymentContent() {
     const [amountGiven, setAmountGiven] = useState('');
     const [paymentComplete, setPaymentComplete] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('');
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    useEffect(() => {
+    const [isDarkMode, setIsDarkMode] = useState(false); useEffect(() => {
         // Get cart data from localStorage or URL params
         const cartData = localStorage.getItem('pos-cart');
         if (cartData) {
-            const parsedCart = JSON.parse(cartData);
-            setCart(parsedCart);
+            const parsedData = JSON.parse(cartData);
+            // Handle both old format (direct cart array) and new format (transaction object)
+            const cartItems = Array.isArray(parsedData) ? parsedData : parsedData.cart || [];
+            setCart(cartItems);
 
-            const subtotalAmount = parsedCart.reduce((sum: number, item: CartItem) => sum + item.subtotal, 0);
+            const subtotalAmount = cartItems.reduce((sum: number, item: CartItem) => sum + item.subtotal, 0);
             const taxAmount = subtotalAmount * 0.1; // 10% tax
 
             setSubtotal(subtotalAmount);

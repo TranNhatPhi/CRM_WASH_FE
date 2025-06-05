@@ -221,14 +221,13 @@ export default function POSPage() {
     <div className={`h-screen flex flex-col transition-all duration-300 ${isDarkMode
       ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
       : 'bg-gradient-to-br from-blue-50 via-white to-gray-100'
-      }`}>
-      {/* Header */}
+      }`}>      {/* Header */}
       <div className={`border-b p-4 shadow-lg backdrop-blur-sm ${isDarkMode
-        ? 'bg-gray-800/90 border-gray-700'
-        : 'bg-white/90 border-gray-200'
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-600'
+        : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-200'
         }`}>
         <div className="flex items-center justify-between">
-          <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
             🚗 Point of Sale
           </h1>
           <div className="flex items-center space-x-6">
@@ -243,15 +242,15 @@ export default function POSPage() {
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <div className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            <div className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
               Cart: {cart.reduce((sum, item) => sum + item.quantity, 0)} items
             </div>
-            <div className={`text-lg font-bold ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>
+            <div className={`text-lg font-bold ${isDarkMode ? 'text-emerald-300' : 'text-green-600'}`}>
               Total: {formatCurrency(total)}
             </div>
           </div>
         </div>
-      </div>      {/* Main Content - Horizontal Layout */}
+      </div>{/* Main Content - Horizontal Layout */}
       <div className="flex-1 flex gap-4 p-4">        {/* Left Sidebar - Category Navigation */}
         <div className="w-48 flex flex-col space-y-1">
           {categories.map((category) => (
@@ -272,26 +271,24 @@ export default function POSPage() {
         <div className="flex-1 flex gap-4">
           {/* Services Panel */}
           <div className="flex-1 flex flex-col">
-            <div className="flex-1">
-              {/* Header Bar */}
-              <div className={`border-b p-3 flex items-center justify-between ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-200'}`}>
+            <div className="flex-1">              {/* Header Bar */}
+              <div className={`border-b p-3 flex items-center justify-between ${isDarkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-500' : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-200'}`}>
                 <div className="flex items-center space-x-4">
-                  <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Washes</h2>
+                  <h2 className={`text-lg font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Washes</h2>
                   <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                     NOTES
                   </button>
                 </div>
-                <div className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <div className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
                   100%
                 </div>
-              </div>              {/* Services Content - Balanced Symmetrical Layout */}
+              </div>{/* Services Content - Balanced Symmetrical Layout */}
               <div className="p-3 h-full space-y-3 overflow-hidden">
                 {/* Top Row - Washes and Detailing (Symmetrical) */}
                 <div className="grid grid-cols-2 gap-4 h-1/2">                  {/* Washes Section */}
-                  <div className="flex flex-col h-full">
-                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
-                      <h3 className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Washes</h3>
-                    </div>
+                  <div className="flex flex-col h-full">                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                    <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Washes</h3>
+                  </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="grid grid-cols-4 gap-1.5">
                         {washServices.slice(0, 8).map((service) => (
@@ -315,10 +312,9 @@ export default function POSPage() {
                   </div>
 
                   {/* Detailing Section */}
-                  <div className="flex flex-col h-full">
-                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
-                      <h3 className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Detailing</h3>
-                    </div>
+                  <div className="flex flex-col h-full">                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                    <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Detailing</h3>
+                  </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="grid grid-cols-4 gap-1.5">
                         {detailingServices.slice(0, 8).map((service) => (
@@ -345,8 +341,7 @@ export default function POSPage() {
                 {/* Bottom Row - Addons and New Car Protection (Symmetrical) */}
                 <div className="grid grid-cols-2 gap-4 h-1/2">                  {/* Addons Section */}
                   <div className="flex flex-col h-full">
-                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
-                      <h3 className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Addons</h3>
+                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>                      <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Addons</h3>
                     </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="grid grid-cols-4 gap-1.5">
@@ -371,10 +366,9 @@ export default function POSPage() {
                   </div>
 
                   {/* New Car Protection Section */}
-                  <div className="flex flex-col h-full">
-                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
-                      <h3 className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>New Car Protection</h3>
-                    </div>
+                  <div className="flex flex-col h-full">                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                    <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>New Car Protection</h3>
+                  </div>
                     <div className="flex-1 space-y-1.5">
                       <div className="grid grid-cols-4 gap-1.5">
                         {protectionServices.slice(0, 8).map((service) => (
@@ -400,38 +394,34 @@ export default function POSPage() {
               </div>
             </div>
           </div>          {/* Right Panel - Staff, Car, and Cart */}
-          <div className="w-64 flex flex-col space-y-3">
-            {/* Staff Selection Section */}
+          <div className="w-64 flex flex-col space-y-3">            {/* Staff Selection Section */}            <div className={`rounded-lg border p-3 shadow-lg backdrop-blur-sm ${isDarkMode
+            ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-500'
+            : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-300'
+            }`}>
+            <h3 className={`font-bold text-sm flex items-center mb-2 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+              👤 Staff Member
+            </h3>
+            <select
+              value={selectedStaff}
+              onChange={(e) => setSelectedStaff(e.target.value)}
+              className={`w-full p-2 rounded border text-xs transition-colors ${isDarkMode
+                ? 'bg-gray-700 border-gray-500 text-gray-100 focus:border-blue-300'
+                : 'bg-white border-gray-300 text-gray-900 focus:border-blue-500'
+                }`}
+            >
+              <option value="">Select Staff Member</option>
+              {staffMembers.map((staff) => (
+                <option key={staff.id} value={staff.id}>
+                  {staff.name} ({staff.role})
+                </option>
+              ))}
+            </select>
+          </div>            {/* Car Registration Section */}
             <div className={`rounded-lg border p-3 shadow-lg backdrop-blur-sm ${isDarkMode
-              ? 'bg-gray-800/90 border-gray-600'
-              : 'bg-white/95 border-gray-300'
+              ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-500'
+              : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-300'
               }`}>
-              <h3 className={`font-bold text-sm flex items-center mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                👤 Staff Member
-              </h3>
-              <select
-                value={selectedStaff}
-                onChange={(e) => setSelectedStaff(e.target.value)}
-                className={`w-full p-2 rounded border text-xs transition-colors ${isDarkMode
-                  ? 'bg-gray-700 border-gray-600 text-white focus:border-blue-400'
-                  : 'bg-white border-gray-300 text-gray-900 focus:border-blue-500'
-                  }`}
-              >
-                <option value="">Select Staff Member</option>
-                {staffMembers.map((staff) => (
-                  <option key={staff.id} value={staff.id}>
-                    {staff.name} ({staff.role})
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Car Registration Section */}
-            <div className={`rounded-lg border p-3 shadow-lg backdrop-blur-sm ${isDarkMode
-              ? 'bg-gray-800/90 border-gray-600'
-              : 'bg-white/95 border-gray-300'
-              }`}>
-              <h3 className={`font-bold text-sm flex items-center mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`font-bold text-sm flex items-center mb-2 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
                 🚗 Car Registration
               </h3>
               <input
@@ -440,107 +430,99 @@ export default function POSPage() {
                 onChange={(e) => setCarRego(e.target.value.toUpperCase())}
                 placeholder="Enter rego (e.g. ABC123)"
                 className={`w-full p-2 rounded border text-xs transition-colors ${isDarkMode
-                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-400'
+                  ? 'bg-gray-700 border-gray-500 text-gray-100 placeholder-gray-300 focus:border-blue-300'
                   : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
                   }`}
                 maxLength={8}
               />
-            </div>
-
-            {/* Shopping Cart Panel */}
-            <div className={`rounded-lg border p-3 shadow-xl backdrop-blur-sm flex-1 ${isDarkMode
-              ? 'bg-gray-800/90 border-gray-600'
-              : 'bg-white/95 border-gray-300'
+            </div>            {/* Shopping Cart Panel */}            <div className={`rounded-lg border p-3 shadow-xl backdrop-blur-sm flex-1 ${isDarkMode
+              ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-500'
+              : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-300'
               }`}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className={`font-bold text-base flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  <ShoppingCart className={`w-4 h-4 mr-1 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                <h3 className={`font-bold text-base flex items-center ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                  <ShoppingCart className={`w-4 h-4 mr-1 ${isDarkMode ? 'text-blue-300' : 'text-blue-600'}`} />
                   Cart
                 </h3>
                 {cart.length > 0 && (
                   <button
                     onClick={clearCart}
-                    className={`text-xs font-medium transition-colors ${isDarkMode
-                      ? 'text-red-400 hover:text-red-300'
+                    className={`text-xs font-medium transition-colors hover:scale-105 ${isDarkMode
+                      ? 'text-red-300 hover:text-red-200'
                       : 'text-red-600 hover:text-red-800'
                       }`}
                   >
                     Clear
                   </button>
                 )}
-              </div>
-
-              <div className="flex-1 overflow-y-auto mb-3" style={{ maxHeight: 'calc(100vh - 450px)' }}>
+              </div><div className="flex-1 overflow-y-auto mb-3" style={{ maxHeight: 'calc(100vh - 450px)' }}>
                 {cart.length === 0 ? (
-                  <div className={`text-center py-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                    <ShoppingCart className={`w-8 h-8 mx-auto mb-2 ${isDarkMode ? 'text-gray-600' : 'text-gray-300'}`} />
+                  <div className={`text-center py-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}`}>
+                    <ShoppingCart className={`w-8 h-8 mx-auto mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-300'}`} />
                     <p className="text-sm">Cart is empty</p>
                   </div>
-                ) : (
-                  <div className="space-y-2">
-                    {cart.map((item) => (
-                      <div key={item.service.id} className={`rounded p-2 border transition-all duration-200 ${isDarkMode
-                        ? 'bg-gray-700/50 border-gray-600'
-                        : 'bg-gray-50 border-gray-200'
-                        }`}>
-                        <div className="flex justify-between items-start mb-1">
-                          <h4 className={`font-semibold text-xs leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                            {item.service.name}
-                          </h4>
+                ) : (<div className="space-y-2">
+                  {cart.map((item) => (
+                    <div key={item.service.id} className={`rounded-lg p-2 border transition-all duration-200 ${isDarkMode
+                      ? 'bg-gray-700/70 border-gray-500 hover:bg-gray-700/90'
+                      : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                      }`}>
+                      <div className="flex justify-between items-start mb-1">
+                        <h4 className={`font-semibold text-xs leading-tight ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                          {item.service.name}
+                        </h4>
+                        <button
+                          onClick={() => removeFromCart(item.service.id)}
+                          className={`ml-1 transition-colors hover:scale-110 ${isDarkMode
+                            ? 'text-red-300 hover:text-red-200'
+                            : 'text-red-500 hover:text-red-700'
+                            }`}
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-1">
                           <button
-                            onClick={() => removeFromCart(item.service.id)}
-                            className={`ml-1 transition-colors ${isDarkMode
-                              ? 'text-red-400 hover:text-red-300'
-                              : 'text-red-500 hover:text-red-700'
+                            onClick={() => updateQuantity(item.service.id, item.quantity - 1)}
+                            className={`w-5 h-5 rounded-full flex items-center justify-center transition-all hover:scale-110 ${isDarkMode
+                              ? 'bg-gray-600 hover:bg-gray-500 text-gray-100'
+                              : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
                               }`}
                           >
-                            <X className="w-3 h-3" />
+                            <Minus className="w-2 h-2" />
+                          </button>
+                          <span className={`w-6 text-center text-xs font-medium ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.service.id, item.quantity + 1)}
+                            className={`w-5 h-5 rounded-full flex items-center justify-center transition-all hover:scale-110 ${isDarkMode
+                              ? 'bg-gray-600 hover:bg-gray-500 text-gray-100'
+                              : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                              }`}
+                          >
+                            <Plus className="w-2 h-2" />
                           </button>
                         </div>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-1">
-                            <button
-                              onClick={() => updateQuantity(item.service.id, item.quantity - 1)}
-                              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${isDarkMode
-                                ? 'bg-gray-600 hover:bg-gray-500 text-white'
-                                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-                                }`}
-                            >
-                              <Minus className="w-2 h-2" />
-                            </button>
-                            <span className={`w-6 text-center text-xs font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.quantity}</span>
-                            <button
-                              onClick={() => updateQuantity(item.service.id, item.quantity + 1)}
-                              className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${isDarkMode
-                                ? 'bg-gray-600 hover:bg-gray-500 text-white'
-                                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-                                }`}
-                            >
-                              <Plus className="w-2 h-2" />
-                            </button>
-                          </div>
-                          <span className={`font-bold text-xs ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
-                            {formatCurrency(item.subtotal)}
-                          </span>
-                        </div>
+                        <span className={`font-bold text-xs ${isDarkMode ? 'text-blue-300' : 'text-blue-600'}`}>
+                          {formatCurrency(item.subtotal)}
+                        </span>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
+                </div>
                 )}
-              </div>
-
-              {/* Cart Summary */}
-              <div className={`border-t pt-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
-                <div className={`rounded-md p-2 ${isDarkMode ? 'bg-gray-700/50' : 'bg-gray-50/80'}`}>
-                  <div className={`space-y-1 text-xs ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+              </div>              {/* Cart Summary */}
+              <div className={`border-t pt-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                <div className={`rounded-md p-2 shadow-sm ${isDarkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-600' : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border border-gray-100'}`}>
+                  <div className={`space-y-1 text-xs ${isDarkMode ? 'text-gray-100' : 'text-gray-700'}`}>
                     <div className="flex justify-between">
                       <span>Subtotal:</span>
-                      <span>{formatCurrency(cart.reduce((sum, item) => sum + item.subtotal, 0))}</span>
+                      <span className={isDarkMode ? 'text-gray-100' : 'text-gray-800'}>{formatCurrency(cart.reduce((sum, item) => sum + item.subtotal, 0))}</span>
                     </div>
-                    <div className={`flex justify-between font-bold text-sm border-t pt-1 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
+                    <div className={`flex justify-between font-bold text-sm border-t pt-1 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
                       <span>Total:</span>
-                      <span className={isDarkMode ? 'text-green-400' : 'text-green-600'}>
+                      <span className={isDarkMode ? 'text-emerald-300' : 'text-green-600'}>
                         {formatCurrency(total)}
                       </span>
                     </div>
@@ -551,12 +533,12 @@ export default function POSPage() {
                 <button
                   onClick={processTransaction}
                   disabled={cart.length === 0}
-                  className={`w-full mt-2 py-2 rounded font-bold text-sm transition-all duration-200 flex items-center justify-center ${cart.length === 0
+                  className={`w-full mt-2 py-2 rounded-lg font-bold text-sm transition-all duration-200 flex items-center justify-center shadow-md ${cart.length === 0
                     ? isDarkMode
-                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed border border-gray-500'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : isDarkMode
-                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white'
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border border-blue-400 shadow-blue-500/20'
                       : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white'
                     }`}
                 >
