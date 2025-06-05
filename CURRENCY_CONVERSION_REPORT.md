@@ -114,13 +114,13 @@ formatCurrencyForScreenReader: (amount: number) => {
 
 ## Example Price Comparisons
 
-| Service | Original VND | New AUD |
-|---------|-------------|---------|
-| Express Wash | 25,000 | $1.52 |
-| Basic Package | 35,000 | $2.12 |
-| Premium Wash | 55,000 | $3.33 |
-| Detail Wash | 85,000 | $5.15 |
-| Supreme Package | 120,000 | $7.27 |
+| Service         | Original VND | New AUD |
+| --------------- | ------------ | ------- |
+| Express Wash    | 25,000       | $1.52   |
+| Basic Package   | 35,000       | $2.12   |
+| Premium Wash    | 55,000       | $3.33   |
+| Detail Wash     | 85,000       | $5.15   |
+| Supreme Package | 120,000      | $7.27   |
 
 ## Notes
 - All conversions maintain appropriate precision for Australian currency

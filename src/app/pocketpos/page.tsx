@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-    ArrowLeft, 
-    ShoppingCart, 
-    Plus, 
-    Minus, 
-    CreditCard, 
+import {
+    ArrowLeft,
+    ShoppingCart,
+    Plus,
+    Minus,
+    CreditCard,
     Smartphone,
     DollarSign,
     Users,
@@ -28,7 +28,7 @@ interface CartItem {
 
 export default function PocketPOSPage() {
     const router = useRouter();
-    const [cart, setCart] = useState<CartItem[]>([]);    const [selectedCategory, setSelectedCategory] = useState('basic');
+    const [cart, setCart] = useState<CartItem[]>([]); const [selectedCategory, setSelectedCategory] = useState('basic');
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -45,7 +45,7 @@ export default function PocketPOSPage() {
         { id: 'premium', name: 'Premium', icon: '✨', color: 'blue' },
         { id: 'deluxe', name: 'Deluxe', icon: '💎', color: 'purple' },
         { id: 'addon', name: 'Add-ons', icon: '🔧', color: 'orange' }
-    ];const getFilteredServices = () => {
+    ]; const getFilteredServices = () => {
         return mockPOSServices.filter((service: POSService) => service.category === selectedCategory);
     };
 
@@ -101,14 +101,14 @@ export default function PocketPOSPage() {
 
     const handleCheckout = () => {
         if (cart.length === 0) return;
-        
+
         // Store cart data in localStorage for payment page
         localStorage.setItem('cartData', JSON.stringify({
             items: cart,
             total: getTotalAmount(),
             timestamp: Date.now()
         }));
-        
+
         router.push('/payment');
     };
 
@@ -130,7 +130,7 @@ export default function PocketPOSPage() {
                         </p>
                     </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                     <button
                         onClick={() => setIsDarkMode(!isDarkMode)}
@@ -138,16 +138,15 @@ export default function PocketPOSPage() {
                     >
                         {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                     </button>
-                    
+
                     <div className="relative">
                         <button
                             onClick={handleCheckout}
                             disabled={cart.length === 0}
-                            className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                                cart.length === 0
+                            className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${cart.length === 0
                                     ? `${isDarkMode ? 'bg-gray-700 text-gray-500' : 'bg-gray-200 text-gray-400'} cursor-not-allowed`
                                     : `${isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white`
-                            }`}
+                                }`}
                         >
                             <ShoppingCart className="w-4 h-4" />
                             <span className="hidden sm:inline">Cart</span>
@@ -168,11 +167,10 @@ export default function PocketPOSPage() {
                         <button
                             key={category.id}
                             onClick={() => setSelectedCategory(category.id)}
-                            className={`flex items-center space-x-2 px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors ${
-                                selectedCategory === category.id
+                            className={`flex items-center space-x-2 px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors ${selectedCategory === category.id
                                     ? `border-${category.color}-500 text-${category.color}-600 ${isDarkMode ? 'text-' + category.color + '-400' : ''}`
                                     : `border-transparent ${isDarkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-500 hover:text-gray-700'}`
-                            }`}
+                                }`}
                         >
                             <span className="text-lg">{category.icon}</span>
                             <span>{category.name}</span>
@@ -189,7 +187,7 @@ export default function PocketPOSPage() {
                         {getFilteredServices().map((service: POSService) => {
                             const cartItem = cart.find(item => item.service.id === service.id);
                             const quantity = cartItem?.quantity || 0;
-                            
+
                             return (
                                 <div
                                     key={service.id}
@@ -250,7 +248,7 @@ export default function PocketPOSPage() {
                                 Clear All
                             </button>
                         </div>
-                        
+
                         <div className="space-y-3 mb-4 max-h-60 lg:max-h-96 overflow-y-auto">
                             {cart.map((item) => (
                                 <div key={item.service.id} className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'} rounded-lg p-3`}>
@@ -285,7 +283,7 @@ export default function PocketPOSPage() {
                                 </div>
                             ))}
                         </div>
-                        
+
                         <div className={`${isDarkMode ? 'border-gray-700' : 'border-gray-200'} border-t pt-4`}>
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-lg font-semibold">Total:</span>
@@ -293,14 +291,13 @@ export default function PocketPOSPage() {
                                     {formatCurrency(getTotalAmount())}
                                 </span>
                             </div>
-                            
+
                             <button
                                 onClick={handleCheckout}
-                                className={`w-full py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 ${
-                                    isDarkMode 
-                                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                                className={`w-full py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 ${isDarkMode
+                                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
                                         : 'bg-blue-500 hover:bg-blue-600 text-white'
-                                }`}
+                                    }`}
                             >
                                 <CreditCard className="w-5 h-5" />
                                 <span>Proceed to Payment</span>

@@ -27,12 +27,12 @@ export function usePerformanceMonitor() {
     const measureFPS = () => {
       frameCount.current++;
       const currentTime = performance.now();
-      
+
       if (currentTime - lastTime.current >= 1000) {
         const fps = Math.round(frameCount.current * 1000 / (currentTime - lastTime.current));
-        
+
         setMetrics(prev => ({ ...prev, fps }));
-        
+
         frameCount.current = 0;
         lastTime.current = currentTime;
       }
@@ -77,7 +77,7 @@ export function usePerformanceMonitor() {
 
     const handleScroll = () => {
       scrollCount++;
-      
+
       const scrollTime = performance.now() - scrollStartTime;
       if (scrollTime > 0) {
         const scrollPerformance = 1000 / scrollTime; // Events per second

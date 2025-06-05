@@ -36,7 +36,7 @@ export default function POSTestPage() {
 
   const testPWAFeatures = () => {
     announce('Testing PWA features');
-    
+
     // Test service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistration().then((registration) => {
@@ -66,7 +66,7 @@ export default function POSTestPage() {
           <div className="p-6">
             <h2 className="text-2xl font-bold mb-4">POS System Enhancement Tests</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              This page demonstrates all the enhanced features of the POS system including 
+              This page demonstrates all the enhanced features of the POS system including
               virtual scrolling, touch gestures, PWA capabilities, and accessibility improvements.
             </p>
           </div>
@@ -85,9 +85,8 @@ export default function POSTestPage() {
                     {['virtual-scroll', 'gestures', 'pwa', 'accessibility'].map((tab) => (
                       <div
                         key={tab}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          activeTab === tab ? 'bg-blue-500' : 'bg-gray-300'
-                        }`}
+                        className={`w-2 h-2 rounded-full transition-colors ${activeTab === tab ? 'bg-blue-500' : 'bg-gray-300'
+                          }`}
                       />
                     ))}
                   </div>
@@ -101,7 +100,7 @@ export default function POSTestPage() {
                   <p className="text-sm text-gray-600 dark:text-gray-300">
                     Testing virtual scrolling with 1,000 items. Only visible items are rendered for optimal performance.
                   </p>
-                    <div className="border rounded-lg">
+                  <div className="border rounded-lg">
                     <div
                       {...containerProps}
                       className="h-96 overflow-auto bg-gray-50 dark:bg-gray-800"
@@ -126,7 +125,7 @@ export default function POSTestPage() {
                       </div>
                     </div>
                   </div>
-                    <div className="text-sm text-gray-500">
+                  <div className="text-sm text-gray-500">
                     Showing {virtualItems.length} of {testItems.length} items (Virtual Scrolling: {testItems.length > 10 ? 'Enabled' : 'Disabled'})
                   </div>
                 </div>
@@ -136,15 +135,15 @@ export default function POSTestPage() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Touch Gesture Support</h3>
                   <div className="grid gap-4">                    <Card className="p-4">
-                      <h4 className="font-medium mb-2">Swipe Navigation</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        Swipe navigation has been disabled for better stability.
-                      </p>
-                      <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded">
-                        <p className="text-sm">ℹ️ Swipe gestures are currently disabled</p>
-                      </div>
-                    </Card>
-                    
+                    <h4 className="font-medium mb-2">Swipe Navigation</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                      Swipe navigation has been disabled for better stability.
+                    </p>
+                    <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded">
+                      <p className="text-sm">ℹ️ Swipe gestures are currently disabled</p>
+                    </div>
+                  </Card>
+
                     <Card className="p-4">
                       <h4 className="font-medium mb-2">Navigation Alternative</h4>
                       <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
@@ -176,7 +175,7 @@ export default function POSTestPage() {
                         </p>
                       </div>
                     </Card>
-                    
+
                     <Card className="p-4">
                       <h4 className="font-medium mb-2">Features Implemented</h4>
                       <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
@@ -195,7 +194,7 @@ export default function POSTestPage() {
               <TabsContent value="accessibility" className="mt-6">
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Accessibility Features</h3>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-4">
                     <button
                       onClick={() => setShowA11yTests(!showA11yTests)}
@@ -212,12 +211,12 @@ export default function POSTestPage() {
                   </div>
 
                   {showA11yTests && (
-                    <AccessibilityTestSuite 
+                    <AccessibilityTestSuite
                       isVisible={showA11yTests}
                       onClose={() => setShowA11yTests(false)}
                     />
                   )}
-                  
+
                   <Card className="p-4">
                     <h4 className="font-medium mb-2">Accessibility Features</h4>
                     <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">

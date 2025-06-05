@@ -20,9 +20,9 @@ interface POSHeaderProps {
   onProcessTransaction: () => void;
 }
 
-export const POSHeader: React.FC<POSHeaderProps> = ({ 
-  onMenuClick, 
-  title = 'Point of Sale', 
+export const POSHeader: React.FC<POSHeaderProps> = ({
+  onMenuClick,
+  title = 'Point of Sale',
   isFullscreen = false,
   cart,
   customer,
@@ -111,7 +111,7 @@ export const POSHeader: React.FC<POSHeaderProps> = ({
                                 {formatCurrency(item.service.price)} each
                               </p>
                             </div>
-                            
+
                             <div className="flex items-center space-x-2">
                               {/* Quantity Controls */}
                               <div className="flex items-center bg-white dark:bg-slate-600 rounded-lg overflow-hidden">
@@ -236,26 +236,26 @@ export const POSHeader: React.FC<POSHeaderProps> = ({
               {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </Button>
 
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="relative text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             >
               <Bell className="h-4 w-4" />
               <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-1 ring-white dark:ring-slate-900" />
             </Button>
 
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             >
               <Settings className="h-4 w-4" />
             </Button>
 
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             >
               <User className="h-4 w-4" />

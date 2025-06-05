@@ -207,15 +207,15 @@ export default function FullscreenPOSPage() {
           <button className="w-full h-12 bg-green-600 hover:bg-green-700 text-white rounded font-bold mb-2">
             SAVE
           </button>        {/* Total Display */}
-        <div className="bg-gray-800 text-white p-3 rounded">
-          <div className="flex justify-between items-center">
-            <span className="font-bold">Total</span>
-            <span className="text-xl font-bold">{formatCurrency(total)}</span>
+          <div className="bg-gray-800 text-white p-3 rounded">
+            <div className="flex justify-between items-center">
+              <span className="font-bold">Total</span>
+              <span className="text-xl font-bold">{formatCurrency(total)}</span>
+            </div>
+            <div className="text-xs text-gray-400 mt-1">
+              Petty Cash
+            </div>
           </div>
-          <div className="text-xs text-gray-400 mt-1">
-            Petty Cash
-          </div>
-        </div>
         </div>
       </div>
 
@@ -227,7 +227,7 @@ export default function FullscreenPOSPage() {
             <div className="flex items-center space-x-4">
               <div className="text-2xl font-bold text-gray-800">Car Wash POS</div>
               <div className="text-sm text-gray-600">
-                Items: {cart.reduce((sum, item) => sum + item.quantity, 0)} | 
+                Items: {cart.reduce((sum, item) => sum + item.quantity, 0)} |
                 Total: {formatCurrency(total)}
               </div>
             </div>
@@ -250,7 +250,7 @@ export default function FullscreenPOSPage() {
             {categories.map((category) => (
               <div key={category.id} className="flex flex-col">
                 {/* Category Header */}
-                <div 
+                <div
                   className="text-white p-3 rounded-t-lg font-bold text-center"
                   style={{ backgroundColor: category.color }}
                 >

@@ -413,8 +413,8 @@ function PaymentContent() {
                                     value={amountGiven}
                                     onChange={(e) => setAmountGiven(e.target.value)}
                                     className={`flex-1 px-3 py-2 border rounded text-right text-xl ${isDarkMode
-                                            ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                                            : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
                                         }`}
                                     placeholder="0.00"
                                     min="0"
@@ -426,8 +426,8 @@ function PaymentContent() {
                                 <button
                                     onClick={() => setAmountGiven(total.toFixed(2))}
                                     className={`py-2 px-4 rounded transition-colors ${isDarkMode
-                                            ? 'bg-gray-600 text-white hover:bg-gray-500'
-                                            : 'bg-gray-600 text-white hover:bg-gray-700'
+                                        ? 'bg-gray-600 text-white hover:bg-gray-500'
+                                        : 'bg-gray-600 text-white hover:bg-gray-700'
                                         }`}
                                 >
                                     {formatCurrency(total)}
@@ -435,8 +435,8 @@ function PaymentContent() {
                                 <button
                                     onClick={() => setAmountGiven((Math.ceil(total)).toFixed(2))}
                                     className={`py-2 px-4 rounded transition-colors ${isDarkMode
-                                            ? 'bg-gray-600 text-white hover:bg-gray-500'
-                                            : 'bg-gray-600 text-white hover:bg-gray-700'
+                                        ? 'bg-gray-600 text-white hover:bg-gray-500'
+                                        : 'bg-gray-600 text-white hover:bg-gray-700'
                                         }`}
                                 >
                                     ${Math.ceil(total)}.00
@@ -444,8 +444,8 @@ function PaymentContent() {
                                 <button
                                     onClick={() => setAmountGiven('100.00')}
                                     className={`py-2 px-4 rounded transition-colors ${isDarkMode
-                                            ? 'bg-gray-600 text-white hover:bg-gray-500'
-                                            : 'bg-gray-600 text-white hover:bg-gray-700'
+                                        ? 'bg-gray-600 text-white hover:bg-gray-500'
+                                        : 'bg-gray-600 text-white hover:bg-gray-700'
                                         }`}
                                 >
                                     $100.00
@@ -457,8 +457,8 @@ function PaymentContent() {
                             <button
                                 onClick={() => setShowCashModal(false)}
                                 className={`flex-1 py-2 px-4 border rounded transition-colors ${isDarkMode
-                                        ? 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                                    ? 'border-gray-600 text-gray-300 hover:bg-gray-700'
+                                    : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                                     }`}
                             >
                                 Cancel
@@ -467,12 +467,12 @@ function PaymentContent() {
                                 onClick={handleCashPayment}
                                 disabled={!amountGiven || parseFloat(amountGiven) < total}
                                 className={`flex-1 py-2 px-4 rounded transition-colors ${!amountGiven || parseFloat(amountGiven) < total
-                                        ? isDarkMode
-                                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                        : isDarkMode
-                                            ? 'bg-blue-600 text-white hover:bg-blue-500'
-                                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                                    ? isDarkMode
+                                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    : isDarkMode
+                                        ? 'bg-blue-600 text-white hover:bg-blue-500'
+                                        : 'bg-blue-600 text-white hover:bg-blue-700'
                                     }`}
                             >
                                 Complete Payment

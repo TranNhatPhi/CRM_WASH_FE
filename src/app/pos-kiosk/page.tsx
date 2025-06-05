@@ -130,7 +130,7 @@ export default function POSFullscreenInterface() {
   );
 
   const CategoryHeader = ({ title, color }: { title: string, color: string }) => (
-    <div 
+    <div
       className="h-12 flex items-center justify-center text-white font-bold text-sm rounded-t-lg"
       style={{ backgroundColor: color }}
     >
@@ -139,7 +139,7 @@ export default function POSFullscreenInterface() {
   );
 
   const FoodCategoryButton = ({ name, color }: { name: string, color: string }) => (
-    <button 
+    <button
       className="h-10 rounded text-white font-medium text-xs shadow-md hover:shadow-lg transition-shadow"
       style={{ backgroundColor: color }}
     >
@@ -206,22 +206,22 @@ export default function POSFullscreenInterface() {
 
           {/* Control Buttons Row */}
           <div className="grid grid-cols-4 gap-1.5">
-            <NumberPadButton onClick={() => {}} className="bg-green-500 hover:bg-green-600 text-white">
+            <NumberPadButton onClick={() => { }} className="bg-green-500 hover:bg-green-600 text-white">
               ↑
             </NumberPadButton>
-            <NumberPadButton onClick={() => {}} className="bg-green-500 hover:bg-green-600 text-white">
+            <NumberPadButton onClick={() => { }} className="bg-green-500 hover:bg-green-600 text-white">
               ↓
             </NumberPadButton>
             <NumberPadButton onClick={clearCart} className="bg-red-500 hover:bg-red-600 text-white">
               ×
             </NumberPadButton>
-            <NumberPadButton onClick={() => {}} className="bg-purple-500 hover:bg-purple-600 text-white text-xs">
+            <NumberPadButton onClick={() => { }} className="bg-purple-500 hover:bg-purple-600 text-white text-xs">
               Mgr
             </NumberPadButton>
           </div>
 
           {/* Save Button */}
-          <NumberPadButton onClick={() => {}} className="w-full bg-green-600 hover:bg-green-700 text-white">
+          <NumberPadButton onClick={() => { }} className="w-full bg-green-600 hover:bg-green-700 text-white">
             SAVE
           </NumberPadButton>
 
@@ -258,7 +258,7 @@ export default function POSFullscreenInterface() {
               <div className="text-lg font-bold text-green-600">
                 Total: ${total.toFixed(2)}
               </div>
-              <button 
+              <button
                 onClick={clearCart}
                 className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm font-medium transition-colors"
               >
@@ -290,10 +290,10 @@ export default function POSFullscreenInterface() {
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {washServices.map((service) => (
-                    <ServiceButton 
-                      key={service.id} 
-                      service={service} 
-                      onClick={() => addToCart(service)} 
+                    <ServiceButton
+                      key={service.id}
+                      service={service}
+                      onClick={() => addToCart(service)}
                     />
                   ))}
                 </div>
@@ -306,10 +306,10 @@ export default function POSFullscreenInterface() {
               <div className="bg-white rounded-b-lg border border-t-0 border-gray-300 flex-1 p-2 space-y-2 overflow-y-auto shadow-md">
                 <div className="grid grid-cols-2 gap-2">
                   {addonServices.map((service) => (
-                    <ServiceButton 
-                      key={service.id} 
-                      service={service} 
-                      onClick={() => addToCart(service)} 
+                    <ServiceButton
+                      key={service.id}
+                      service={service}
+                      onClick={() => addToCart(service)}
                     />
                   ))}
                 </div>
@@ -322,10 +322,10 @@ export default function POSFullscreenInterface() {
               <div className="bg-white rounded-b-lg border border-t-0 border-gray-300 flex-1 p-2 space-y-2 overflow-y-auto shadow-md">
                 <div className="grid grid-cols-2 gap-2">
                   {detailingServices.map((service) => (
-                    <ServiceButton 
-                      key={service.id} 
-                      service={service} 
-                      onClick={() => addToCart(service)} 
+                    <ServiceButton
+                      key={service.id}
+                      service={service}
+                      onClick={() => addToCart(service)}
                     />
                   ))}
                 </div>
@@ -338,10 +338,10 @@ export default function POSFullscreenInterface() {
               <div className="bg-white rounded-b-lg border border-t-0 border-gray-300 flex-1 p-2 space-y-2 overflow-y-auto shadow-md">
                 <div className="grid grid-cols-2 gap-2">
                   {protectionServices.map((service) => (
-                    <ServiceButton 
-                      key={service.id} 
-                      service={service} 
-                      onClick={() => addToCart(service)} 
+                    <ServiceButton
+                      key={service.id}
+                      service={service}
+                      onClick={() => addToCart(service)}
                     />
                   ))}
                 </div>
