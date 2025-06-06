@@ -113,7 +113,7 @@ export default function LoginPage() {
             <div className="flex-1 p-4 grid grid-cols-2 gap-4">
                 {/* Top Row */}
                 <div className="bg-blue-500 text-white flex items-center justify-center text-2xl font-bold rounded-lg shadow-lg hover:bg-blue-600 transition-colors cursor-pointer"
-                    onClick={() => router.push('/pos')}>
+                    onClick={() => router.push('/pos-dashboard')}>
                     <div className="text-center">
                         <div>Point of Sale</div>
                     </div>

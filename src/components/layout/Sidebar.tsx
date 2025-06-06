@@ -25,9 +25,9 @@ import { cn } from '@/utils';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
-  { name: 'Point of Sale', href: '/pos', icon: ShoppingCart },
+  { name: 'Point of Sale', href: '/pos-dashboard', icon: ShoppingCart },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-  { name: 'Vehicles', href: '/cars', icon: Car },
+  { name: 'Cars', href: '/cars', icon: Car },
   { name: 'Revenue', href: '/revenue', icon: DollarSign },
   { name: 'Staff', href: '/staff', icon: Users },
   { name: 'Reports', href: '/reports', icon: FileText },

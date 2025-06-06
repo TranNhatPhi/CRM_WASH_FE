@@ -6,106 +6,58 @@ import { useRouter } from 'next/navigation';
 import { POSService, CartItem } from '@/types';
 import { formatCurrency } from '@/utils';
 import { Minus, Plus, X, ShoppingCart, CreditCard, Sun, Moon } from 'lucide-react';
-
-// Updated service data with improved colors
-const washServices = [
-  { id: 'w1', name: 'Outside Sedan', price: 15.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w2', name: 'Outside SUV', price: 18.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w3', name: 'Outside 4WD', price: 22.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w4', name: 'Full Sedan', price: 25.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w5', name: 'Full SUV', price: 30.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w6', name: 'Full 4WD', price: 35.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w7', name: 'Polish Sedan', price: 40.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w8', name: 'Polish SUV', price: 45.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w9', name: 'Polish 4WD', price: 50.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w10', name: 'Express Wash', price: 12.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w11', name: 'Premium Small', price: 55.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  { id: 'w12', name: 'Premium Large', price: 65.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  // { id: 'w13', name: 'Eco Wash', price: 20.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  // { id: 'w14', name: 'Luxury Package', price: 75.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  // { id: 'w15', name: 'Basic Rinse', price: 8.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-  // { id: 'w16', name: 'VIP Service', price: 95.00, category: 'wash', color: '#14B8A6', darkColor: '#0D9488' },
-];
-
-const addonServices = [
-  { id: 'a1', name: 'Door Scratches', price: 8.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a2', name: 'Bug/Tar Removal', price: 12.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a3', name: 'Trim Polish', price: 15.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a4', name: 'Mat Steam Clean', price: 20.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a5', name: 'Protective Wax', price: 10.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a6', name: 'Dash Detail', price: 18.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a7', name: 'Clay Bar', price: 25.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a8', name: 'Miscellaneous', price: 5.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a9', name: 'Tire Shine', price: 7.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a10', name: 'Air Freshener', price: 6.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a11', name: 'Glass Treatment', price: 14.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  { id: 'a12', name: 'Headlight Fix', price: 22.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  // { id: 'a13', name: 'Chrome Polish', price: 16.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  // { id: 'a14', name: 'Fabric Shield', price: 24.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  // { id: 'a15', name: 'Engine Clean', price: 30.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-  // { id: 'a16', name: 'Pet Hair Removal', price: 18.00, category: 'addon', color: '#F97316', darkColor: '#EA580C' },
-];
-
-const detailingServices = [
-  { id: 'd1', name: 'Hand Wax', price: 35.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd2', name: 'Leather Clean', price: 30.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd3', name: 'Carpet Steam', price: 25.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd4', name: 'Seat Steam', price: 28.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd5', name: 'Cut & Polish', price: 45.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd6', name: 'Interior Steam', price: 32.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd7', name: 'Full Detail', price: 80.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd8', name: 'Mini Detail', price: 40.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd9', name: 'Paint Fix', price: 55.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd10', name: 'Clay Treatment', price: 38.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd11', name: 'Swirl Removal', price: 42.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  { id: 'd12', name: 'Machine Polish', price: 48.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  // { id: 'd13', name: 'Ceramic Prep', price: 65.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  // { id: 'd14', name: 'Oxide Removal', price: 52.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  // { id: 'd15', name: 'Deep Clean', price: 75.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-  // { id: 'd16', name: 'Show Finish', price: 95.00, category: 'detailing', color: '#059669', darkColor: '#047857' },
-];
-
-const protectionServices = [
-  { id: 'p1', name: 'Interior Shield', price: 60.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p2', name: 'Paint Shield', price: 120.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p3', name: 'Scratch Repair', price: 80.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p4', name: 'Wheel Repair', price: 50.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p5', name: 'Bumper Fix', price: 70.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p6', name: 'Panel Repair', price: 90.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p7', name: 'Ceramic Coat', price: 150.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p8', name: 'Paint Sealant', price: 85.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p9', name: 'Under Shield', price: 95.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p10', name: 'Glass Film', price: 75.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p11', name: 'Rust Shield', price: 65.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  { id: 'p12', name: 'Chip Repair', price: 45.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  // { id: 'p13', name: 'Clear Bra', price: 200.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  // { id: 'p14', name: 'Water Shield', price: 55.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-  // { id: 'p15', name: 'UV Package', price: 100.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' }, { id: 'p16', name: 'Complete Suite', price: 300.00, category: 'protection', color: '#8B5CF6', darkColor: '#7C3AED' },
-];
-
-// Staff members data
-const staffMembers = [
-  { id: 'staff1', name: 'John Smith', role: 'Manager' },
-  { id: 'staff2', name: 'Sarah Wilson', role: 'Senior Washer' },
-  { id: 'staff3', name: 'Mike Johnson', role: 'Detailer' },
-  { id: 'staff4', name: 'Emma Davis', role: 'Cashier' },
-  { id: 'staff5', name: 'David Brown', role: 'Washer' },
-  { id: 'staff6', name: 'Lisa Garcia', role: 'Supervisor' },
-];
+import { db, Service } from '@/lib/supabase';
 
 export default function POSPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeCategory, setActiveCategory] = useState('WASHES');
-  const [selectedStaff, setSelectedStaff] = useState('');
+  const [selectedStaff, setSelectedStaff] = useState('');  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [carRego, setCarRego] = useState('');
+  const [staffMembers, setStaffMembers] = useState<any[]>([
+    { id: 'staff1', name: 'John Doe', role: 'Senior Technician' },
+    { id: 'staff2', name: 'Jane Smith', role: 'Detailing Specialist' },
+    { id: 'staff3', name: 'Mike Johnson', role: 'Wash Attendant' }
+  ]);
   const router = useRouter();
-
   useEffect(() => {
     const subtotal = cart.reduce((sum, item) => sum + item.subtotal, 0);
     setTotal(subtotal);
   }, [cart]);
+  // Load services from database
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const servicesData = await db.services.getAll();
+        setServices(servicesData);
+      } catch (err) {
+        console.error('Error loading services:', err);
+        setError('Failed to load services');
+        // Fallback to sample data if database fails
+        setServices([
+          { id: '1', name: 'Basic Wash', price: 15, category: 'wash', description: 'Basic car wash', created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+          { id: '2', name: 'Premium Wash', price: 25, category: 'wash', description: 'Premium car wash', created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+          { id: '3', name: 'Interior Detail', price: 35, category: 'detailing', description: 'Interior detailing', created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+          { id: '4', name: 'Wax Protection', price: 20, category: 'protection', description: 'Wax protection service', created_at: new Date().toISOString(), updated_at: new Date().toISOString() }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
+
+  // Filter services by category
+  const washServices = services.filter(service => service.category === 'wash');
+  const detailingServices = services.filter(service => service.category === 'detailing');
+  const addonServices = services.filter(service => service.category === 'addon');
+  const protectionServices = services.filter(service => service.category === 'protection');
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -186,8 +138,8 @@ export default function POSPage() {
 
     // Navigate to payment page
     router.push('/payment');
-  };  // Service Button Component - Optimized for compact display
-  const ServiceButton = ({ service, onClick }: { service: any; onClick: () => void }) => (
+  };  // Service Button Component - Updated for database services
+  const ServiceButton = ({ service, onClick }: { service: Service; onClick: () => void }) => (
     <button
       onClick={onClick}
       className={`min-h-[48px] h-auto border rounded transition-all duration-200 text-xs font-medium p-1.5 text-center shadow-sm hover:shadow-md transform hover:scale-102 ${isDarkMode
@@ -195,9 +147,10 @@ export default function POSPage() {
         : 'bg-white border-gray-300 hover:bg-gray-50 text-gray-900'
         }`}
       style={{
-        borderTopColor: isDarkMode ? service.darkColor : service.color,
+        borderTopColor: isDarkMode ? '#3B82F6' : '#2563EB',
         borderTopWidth: '2px',
-      }}      >
+      }}
+    >
       <div className="flex flex-col justify-between h-full min-h-[44px]">
         <div className="font-medium text-center text-xs leading-tight line-clamp-2 flex-1 flex items-center justify-center">
           {service.name}
@@ -313,103 +266,143 @@ export default function POSPage() {
                 </div>
                 <div className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
                   100%
-                </div>              </div>{/* Services Content - Balanced Symmetrical Layout */}              <div className="p-2 flex-1 space-y-2 overflow-auto">
-                {/* Top Row - Washes and Detailing (Symmetrical) */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-3" style={{ minHeight: '280px' }}>{/* Washes Section */}
-                  <div className="flex flex-col">                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
-                    <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Washes</h3>
-                  </div>                    <div className="flex-1 space-y-1.5">
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {washServices.slice(0, 8).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {washServices.slice(8, 16).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>                    </div>
+                </div>              </div>              {/* Services Content - Balanced Symmetrical Layout */}              
+              <div className="p-2 flex-1 space-y-2 overflow-auto">
+                {loading ? (
+                  <div className={`flex items-center justify-center h-64 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                      <p>Loading services...</p>
+                    </div>
                   </div>
-
-                  {/* Detailing Section */}
-                  <div className="flex flex-col">                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
-                    <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Detailing</h3>
-                  </div>                    <div className="flex-1 space-y-1.5">
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {detailingServices.slice(0, 8).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {detailingServices.slice(8, 16).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>
+                ) : error ? (
+                  <div className={`flex items-center justify-center h-64 ${isDarkMode ? 'text-red-300' : 'text-red-600'}`}>
+                    <div className="text-center">
+                      <p className="mb-4">Error: {error}</p>
+                      <button 
+                        onClick={() => window.location.reload()} 
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                      >
+                        Retry
+                      </button>
                     </div>
-                  </div>                </div>                {/* Bottom Row - Addons and New Car Protection (Symmetrical) */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-3" style={{ minHeight: '280px' }}>{/* Addons Section */}
-                  <div className="flex flex-col">
-                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>                      <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Addons</h3>
-                    </div>
-                    <div className="flex-1 space-y-1.5">
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {addonServices.slice(0, 8).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {addonServices.slice(8, 16).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>
-                    </div>                  </div>                  {/* New Car Protection Section */}
-                  <div className="flex flex-col">                    <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
-                    <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>New Car Protection</h3>
                   </div>
-                    <div className="flex-1 space-y-1.5">
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {protectionServices.slice(0, 8).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
-                        {protectionServices.slice(8, 16).map((service) => (
-                          <ServiceButton
-                            key={service.id}
-                            service={service}
-                            onClick={() => addToCart(service)}
-                          />
-                        ))}
+                ) : (
+                  <>
+                    {/* Top Row - Washes and Detailing (Symmetrical) */}
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-3" style={{ minHeight: '280px' }}>
+                      {/* Washes Section */}
+                      <div className="flex flex-col">                    
+                        <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                          <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Washes</h3>
+                        </div>                    
+                        <div className="flex-1 space-y-1.5">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {washServices.slice(0, 8).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {washServices.slice(8, 16).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>                    
+                        </div>
+                      </div>                      {/* Detailing Section */}
+                      <div className="flex flex-col">                    
+                        <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                          <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Detailing</h3>
+                        </div>                    
+                        <div className="flex-1 space-y-1.5">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {detailingServices.slice(0, 8).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {detailingServices.slice(8, 16).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>                
+                    </div>                
+                    
+                    {/* Bottom Row - Addons and New Car Protection (Symmetrical) */}
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-3" style={{ minHeight: '280px' }}>
+                      {/* Addons Section */}
+                      <div className="flex flex-col">
+                        <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>                      
+                          <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>Addons</h3>
+                        </div>
+                        <div className="flex-1 space-y-1.5">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {addonServices.slice(0, 8).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {addonServices.slice(8, 16).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                        </div>                  
+                      </div>                  
+                      
+                      {/* New Car Protection Section */}
+                      <div className="flex flex-col">                    
+                        <div className={`border-b pb-1 mb-2 ${isDarkMode ? 'border-gray-500' : 'border-gray-200'}`}>
+                          <h3 className={`text-base font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>New Car Protection</h3>
+                        </div>
+                        <div className="flex-1 space-y-1.5">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {protectionServices.slice(0, 8).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                            {protectionServices.slice(8, 16).map((service) => (
+                              <ServiceButton
+                                key={service.id}
+                                service={service}
+                                onClick={() => addToCart(service)}
+                              />
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </>
+                )}
+              </div>
                   </div>
                 </div>
               </div>
