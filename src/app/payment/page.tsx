@@ -28,7 +28,7 @@ function PaymentContent() {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [carInfo, setCarInfo] = useState<any>(null);
-    const [customerInfo, setCustomerInfo] = useState<any>(null); useEffect(() => {
+    const [customerInfo, setCustomerInfo] = useState<any>(null);    useEffect(() => {
         // Get cart data from localStorage or URL params
         const cartData = localStorage.getItem('pos-cart');
         if (cartData) {
@@ -40,20 +40,26 @@ function PaymentContent() {
             if (parsedData.carInfo) {
                 setCarInfo(parsedData.carInfo);
             }
+            if (parsedData.customerInfo) {
+                setCustomerInfo(parsedData.customerInfo);
+            }
+            // Legacy support for old customer format
             if (parsedData.customer) {
                 setCustomerInfo(parsedData.customer);
-            }
-
-            setCart(cartItems);
+            }            setCart(cartItems);
 
             const subtotalAmount = cartItems.reduce((sum: number, item: CartItem) => sum + item.subtotal, 0);
-            const taxAmount = subtotalAmount * 0.1; // 10% tax
+            
+            // Apply VIP discount if customer is VIP
+            const isVip = parsedData.customerInfo?.isVip || false;
+            const discountedSubtotal = isVip ? subtotalAmount * 0.9 : subtotalAmount; // 10% discount for VIP
+            const taxAmount = discountedSubtotal * 0.1; // 10% tax
 
-            setSubtotal(subtotalAmount);
+            setSubtotal(subtotalAmount); // Keep original subtotal for display
             setTax(taxAmount);
-            setTotal(subtotalAmount + taxAmount);
+            setTotal(discountedSubtotal + taxAmount);
         }
-    }, []); const toggleTheme = () => {
+    }, []);const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
     };
 
@@ -204,11 +210,25 @@ function PaymentContent() {
                         <div className={`mb-6 p-4 border-2 border-dashed rounded-lg ${isDarkMode ? 'border-slate-600 bg-slate-700' : 'border-gray-400 bg-gray-50'
                             }`}>
                             <div className={`text-center font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                                Car info
+                                Customer & Vehicle Information
                             </div>
-                            <div className={`text-center text-sm mt-1 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
-                                {carInfo ? (
-                                    `${carInfo.licensePlate} Name: ${carInfo.customer} Phone: ${customerInfo?.phone || '0123456789'}`
+                            <div className={`text-center text-sm mt-2 space-y-1 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
+                                {customerInfo ? (
+                                    <>
+                                        <div><strong>Name:</strong> {customerInfo.name}</div>
+                                        <div><strong>Phone:</strong> {customerInfo.phone}</div>
+                                        {customerInfo.email && (
+                                            <div><strong>Email:</strong> {customerInfo.email}</div>
+                                        )}
+                                        {customerInfo.vehiclePlate && (
+                                            <div><strong>Vehicle Plate:</strong> {customerInfo.vehiclePlate}</div>
+                                        )}
+                                        {carInfo?.licensePlate && (
+                                            <div><strong>Car Registration:</strong> {carInfo.licensePlate}</div>
+                                        )}
+                                    </>
+                                ) : carInfo ? (
+                                    `${carInfo.licensePlate} Name: ${carInfo.customer} Time: ${carInfo.time}`
                                 ) : (
                                     'ABC-123 Name: Minh Phone: 012312310'
                                 )}
@@ -416,13 +436,16 @@ function PaymentContent() {
                         }`}>
                         <div className={`text-center font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                             Car info
-                        </div>
-                        <div className={`text-center text-sm mt-1 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
+                        </div>                        <div className={`text-center text-sm mt-1 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
                             {carInfo ? (
-                                `${carInfo.licensePlate} Name: ${carInfo.customer} Time: ${carInfo.time}`
-                            ) : (
+                                `${carInfo.licensePlate} Name: ${carInfo.customer} Time: ${carInfo.time}`                            ) : (
                                 customerInfo ? (
-                                    `${customerInfo.vehiclePlate || 'N/A'} Name: ${customerInfo.name} Phone: ${customerInfo.phone}`
+                                    <div className="space-y-1">
+                                        <div>Name: {customerInfo.name} | Phone: {customerInfo.phone}</div>
+                                        {customerInfo.isVip && (
+                                            <div className="text-yellow-600 font-semibold">⭐ VIP Customer (10% discount applied)</div>
+                                        )}
+                                    </div>
                                 ) : (
                                     'ABC-123 Name: Minh Phone: 012312310'
                                 )
@@ -468,14 +491,18 @@ function PaymentContent() {
                                 {cart.length > 0 && <div className="h-4"></div>}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Summary Section - Fixed at bottom */}
+                    </div>                    {/* Summary Section - Fixed at bottom */}
                     <div className={`border-t pt-4 space-y-2 mt-4 ${isDarkMode ? 'border-slate-600' : 'border-gray-200'}`}>
                         <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
                             <span>Subtotal</span>
                             <span>{formatCurrency(subtotal)}</span>
                         </div>
+                        {customerInfo?.isVip && (
+                            <div className={`flex justify-between text-sm ${isDarkMode ? 'text-yellow-400' : 'text-orange-600'}`}>
+                                <span>⭐ VIP Discount (10%)</span>
+                                <span>-{formatCurrency(subtotal * 0.1)}</span>
+                            </div>
+                        )}
                         <div className={`flex justify-between text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>
                             <span>Tax (10%)</span>
                             <span>{formatCurrency(tax)}</span>

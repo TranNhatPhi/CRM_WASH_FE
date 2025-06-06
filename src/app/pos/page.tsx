@@ -97,15 +97,17 @@ export default function POSPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('WASHES');
-  const [selectedStaff, setSelectedStaff] = useState('');
+  const [activeCategory, setActiveCategory] = useState('WASHES');  const [selectedStaff, setSelectedStaff] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [carRego, setCarRego] = useState('');
+  const [isVipCustomer, setIsVipCustomer] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
     const subtotal = cart.reduce((sum, item) => sum + item.subtotal, 0);
-    setTotal(subtotal);
-  }, [cart]);
+    const discountedTotal = isVipCustomer ? subtotal * 0.9 : subtotal; // 10% discount for VIP
+    setTotal(discountedTotal);
+  }, [cart, isVipCustomer]);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -156,9 +158,25 @@ export default function POSPage() {
 
   const clearCart = () => {
     setCart([]);
-  }; const processTransaction = () => {
+  };  const processTransaction = () => {
     if (cart.length === 0) {
       alert('Please add services to cart');
+      return;
+    }
+
+    // Validate required customer information
+    if (!customerName.trim()) {
+      alert('Customer name is required');
+      return;
+    }
+
+    if (!customerPhone.trim()) {
+      alert('Customer phone number is required');
+      return;
+    }    // Validate phone number format (basic validation)
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+    if (!phoneRegex.test(customerPhone.trim())) {
+      alert('Please enter a valid phone number');
       return;
     }
 
@@ -167,16 +185,19 @@ export default function POSPage() {
       const proceed = confirm('No staff member selected. Continue anyway?');
       if (!proceed) return;
     }
-
+    
     if (!carRego.trim()) {
       const proceed = confirm('No car registration entered. Continue anyway?');
       if (!proceed) return;
-    }
-
-    // Prepare transaction data
+    }    // Prepare transaction data
     const transactionData = {
       cart,
       staffMember: selectedStaff ? staffMembers.find(staff => staff.id === selectedStaff) : null,
+      customerInfo: {
+        name: customerName.trim(),
+        phone: customerPhone.trim(),
+        isVip: isVipCustomer,
+      },
       carRegistration: carRego.trim() || null,
       timestamp: new Date().toISOString(),
     };
@@ -186,7 +207,7 @@ export default function POSPage() {
 
     // Navigate to payment page
     router.push('/payment');
-  };  // Service Button Component - Optimized for compact display
+  };// Service Button Component - Optimized for compact display
   const ServiceButton = ({ service, onClick }: { service: any; onClick: () => void }) => (
     <button
       onClick={onClick}
@@ -253,13 +274,18 @@ export default function POSPage() {
               title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-
-            <div className={`text-xs ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
+            </button>            <div className={`text-xs ${isDarkMode ? 'text-gray-200' : 'text-gray-600'}`}>
               Cart: {cart.reduce((sum, item) => sum + item.quantity, 0)} items
             </div>
-            <div className={`text-sm font-bold ${isDarkMode ? 'text-emerald-300' : 'text-green-600'}`}>
-              Total: {formatCurrency(total)}
+            <div className="flex flex-col items-end">
+              <div className={`text-sm font-bold ${isDarkMode ? 'text-emerald-300' : 'text-green-600'}`}>
+                Total: {formatCurrency(total)}
+              </div>
+              {isVipCustomer && (
+                <div className={`text-xs ${isDarkMode ? 'text-yellow-300' : 'text-orange-600'}`}>
+                  ⭐ VIP 10% OFF
+                </div>
+              )}
             </div>
             {/* Staff Member Selection */}
             <div className="flex items-center space-x-4">
@@ -413,7 +439,75 @@ export default function POSPage() {
                   </div>
                 </div>
               </div>
-            </div>          </div>          {/* Right Panel - Staff, Car, and Cart */}          <div className="w-full xl:w-60 flex flex-col space-y-2 flex-shrink-0">{/* Car Registration Section */}            <div className={`rounded-lg border p-2 shadow-lg backdrop-blur-sm ${isDarkMode
+            </div>          </div>          {/* Right Panel - Staff, Car, and Cart */}          <div className="w-full xl:w-60 flex flex-col space-y-2 flex-shrink-0">            {/* Customer Information Section */}
+            <div className={`rounded-lg border p-3 shadow-lg backdrop-blur-sm ${isDarkMode
+              ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-500'
+              : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-300'
+              }`}>
+              <h3 className={`font-bold text-sm flex items-center mb-3 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                👤 Customer Information
+              </h3>
+              
+              <div className="space-y-2">
+                {/* Customer Name - Required */}
+                <div>
+                  <label className={`block text-xs font-medium mb-1 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                    Customer Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="Enter customer name"
+                    className={`w-full p-2 rounded border text-xs transition-colors ${isDarkMode
+                      ? 'bg-gray-700 border-gray-500 text-gray-100 placeholder-gray-300 focus:border-blue-300'
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                      }`}
+                    maxLength={50}
+                    required
+                  />
+                </div>                {/* Phone Number - Required */}
+                <div>
+                  <label className={`block text-xs font-medium mb-1 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    value={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    placeholder="Enter phone number"
+                    className={`w-full p-2 rounded border text-xs transition-colors ${isDarkMode
+                      ? 'bg-gray-700 border-gray-500 text-gray-100 placeholder-gray-300 focus:border-blue-300'
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
+                      }`}
+                    maxLength={20}
+                    required
+                  />
+                </div>
+
+                {/* VIP Customer Checkbox */}
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="vipCustomer"
+                    checked={isVipCustomer}
+                    onChange={(e) => setIsVipCustomer(e.target.checked)}
+                    className={`rounded transition-colors ${isDarkMode
+                      ? 'bg-gray-700 border-gray-500 text-blue-600 focus:ring-blue-500'
+                      : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                      }`}
+                  />
+                  <label 
+                    htmlFor="vipCustomer" 
+                    className={`text-xs font-medium cursor-pointer ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}
+                  >
+                    ⭐ VIP Customer (10% discount)
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* Car Registration Section */}            <div className={`rounded-lg border p-2 shadow-lg backdrop-blur-sm ${isDarkMode
               ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-500'
               : 'bg-gradient-to-br from-blue-50 via-white to-gray-100 border-gray-300'
               }`}>
