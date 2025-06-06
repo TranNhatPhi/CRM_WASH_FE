@@ -26,13 +26,24 @@ function PaymentContent() {
     const [amountGiven, setAmountGiven] = useState('');
     const [paymentComplete, setPaymentComplete] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('');
-    const [isDarkMode, setIsDarkMode] = useState(false); useEffect(() => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [carInfo, setCarInfo] = useState<any>(null);
+    const [customerInfo, setCustomerInfo] = useState<any>(null); useEffect(() => {
         // Get cart data from localStorage or URL params
         const cartData = localStorage.getItem('pos-cart');
         if (cartData) {
             const parsedData = JSON.parse(cartData);
             // Handle both old format (direct cart array) and new format (transaction object)
             const cartItems = Array.isArray(parsedData) ? parsedData : parsedData.cart || [];
+
+            // Set car and customer info if available
+            if (parsedData.carInfo) {
+                setCarInfo(parsedData.carInfo);
+            }
+            if (parsedData.customer) {
+                setCustomerInfo(parsedData.customer);
+            }
+
             setCart(cartItems);
 
             const subtotalAmount = cartItems.reduce((sum: number, item: CartItem) => sum + item.subtotal, 0);
@@ -42,11 +53,79 @@ function PaymentContent() {
             setTax(taxAmount);
             setTotal(subtotalAmount + taxAmount);
         }
-    }, []);
-
-    const toggleTheme = () => {
+    }, []); const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
-    };    const handlePaymentMethod = (method: string) => {
+    };
+
+    const formatStatus = (status: string) => {
+        switch (status) {
+            case 'pending':
+                return 'Pending';
+            case 'in-progress':
+                return 'In Progress';
+            case 'finished':
+                return 'Finished';
+            default:
+                return status;
+        }
+    };
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'pending':
+                return 'bg-blue-100 text-blue-800 border-blue-200';
+            case 'in-progress':
+                return 'bg-orange-100 text-orange-800 border-orange-200';
+            case 'finished':
+                return 'bg-green-100 text-green-800 border-green-200';
+            default:
+                return 'bg-gray-100 text-gray-800 border-gray-200';
+        }
+    };
+
+    const getStatusColorDark = (status: string) => {
+        switch (status) {
+            case 'pending':
+                return 'bg-blue-800 text-blue-200 border-blue-600';
+            case 'in-progress':
+                return 'bg-orange-800 text-orange-200 border-orange-600';
+            case 'finished':
+                return 'bg-green-800 text-green-200 border-green-600';
+            default:
+                return 'bg-gray-700 text-gray-300 border-gray-600';
+        }
+    };
+
+    // Function to update car status
+    const updateCarStatus = (newStatus: string) => {
+        if (carInfo) {
+            const updatedCarInfo = { ...carInfo, status: newStatus };
+            setCarInfo(updatedCarInfo);
+
+            // Also update localStorage to persist the change
+            const cartData = localStorage.getItem('pos-cart');
+            if (cartData) {
+                const parsedData = JSON.parse(cartData);
+                parsedData.carInfo = updatedCarInfo;
+                localStorage.setItem('pos-cart', JSON.stringify(parsedData));
+            }
+        }
+    };
+
+    // Handler for Start WASH button
+    const handleStartWash = () => {
+        updateCarStatus('in-progress');
+    };
+
+    // Handler for Finish WASH button
+    const handleFinishWash = () => {
+        updateCarStatus('finished');
+    };
+
+    // Handler for Cancel button
+    const handleCancel = () => {
+        updateCarStatus('pending');
+    }; const handlePaymentMethod = (method: string) => {
         setPaymentMethod(method);
         if (method === 'Cash') {
             setShowCashModal(true);
@@ -120,39 +199,54 @@ function PaymentContent() {
                     </div>
                 </div>
 
-                <div className="flex h-[calc(100vh-80px)]">
-                    {/* Left Panel - Sale Details */}
-                    <div className={`w-2/5 p-6 ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
-                        {/* Car Info Box */}
+                <div className="flex h-[calc(100vh-80px)]">                    {/* Left Panel - Sale Details */}
+                    <div className={`w-2/5 p-6 ${isDarkMode ? 'bg-slate-800' : 'bg-white'} flex flex-col`}>                        {/* Car Info Box */}
                         <div className={`mb-6 p-4 border-2 border-dashed rounded-lg ${isDarkMode ? 'border-slate-600 bg-slate-700' : 'border-gray-400 bg-gray-50'
                             }`}>
                             <div className={`text-center font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                                 Car info
                             </div>
                             <div className={`text-center text-sm mt-1 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
-                                ABC-123 Name: Minh Phone: 012312310
+                                {carInfo ? (
+                                    `${carInfo.licensePlate} Name: ${carInfo.customer} Phone: ${customerInfo?.phone || '0123456789'}`
+                                ) : (
+                                    'ABC-123 Name: Minh Phone: 012312310'
+                                )}
                             </div>
                         </div>
 
-                        <div className="space-y-3 mb-6">
-                            {cart.map((item, index) => (
-                                <div key={item.service.id} className="flex justify-between items-center">
-                                    <div>
-                                        <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                                            {item.service.name}
+                        {/* Scrollable Items List */}
+                        <div className="flex-1 flex flex-col min-h-0">
+                            <div className={`flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 ${isDarkMode ? 'scrollbar-thumb-slate-600 scrollbar-track-slate-800' : ''}`}>
+                                <div className="space-y-3 pr-2">
+                                    {cart.map((item, index) => (
+                                        <div key={item.service.id} className={`p-3 rounded-lg border transition-all duration-200 hover:shadow-md ${isDarkMode ? 'border-slate-600 bg-slate-700 hover:bg-slate-600' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'}`}>
+                                            <div className="flex justify-between items-center">
+                                                <div className="flex-1">
+                                                    <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                                                        {item.service.name}
+                                                    </div>
+                                                    <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-500'}`}>
+                                                        Qty: {item.quantity}
+                                                    </div>
+                                                </div>
+                                                <div className={`font-bold text-blue-600 text-lg`}>
+                                                    {formatCurrency(item.subtotal)}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-500'}`}>
-                                            Qty: {item.quantity}
+                                    ))}
+                                    {cart.length === 0 && (
+                                        <div className={`text-center py-8 ${isDarkMode ? 'text-slate-400' : 'text-gray-500'}`}>
+                                            <p>No items in cart</p>
                                         </div>
-                                    </div>
-                                    <div className={`font-bold text-blue-600`}>
-                                        {formatCurrency(item.subtotal)}
-                                    </div>
+                                    )}
                                 </div>
-                            ))}
+                            </div>
                         </div>
 
-                        <div className={`border-t pt-4 space-y-2 ${isDarkMode ? 'border-slate-600' : 'border-gray-200'}`}>
+                        {/* Summary Section - Fixed at bottom */}
+                        <div className={`border-t pt-4 space-y-2 mt-4 ${isDarkMode ? 'border-slate-600' : 'border-gray-200'}`}>
                             <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
                                 <span>Subtotal</span>
                                 <span>{formatCurrency(subtotal)}</span>
@@ -218,26 +312,56 @@ function PaymentContent() {
                         <div className="text-center space-y-4">
                             <div className="text-sm text-gray-600 mb-4">
                                 Add a customer to pay with the following options:
-                            </div>
-
-                            <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-slate-600' : 'bg-gray-300'} text-center`}>
-                                <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                                    Car Status: Pending
+                            </div>                            <div className={`p-4 rounded-lg border ${isDarkMode ? getStatusColorDark(carInfo?.status || 'pending') : getStatusColor(carInfo?.status || 'pending')} text-center`}>
+                                <div className="font-medium">
+                                    Car Status: {formatStatus(carInfo?.status || 'pending')}
                                 </div>
-                            </div>
-
-                            {/* Action Buttons */}
+                            </div>                            {/* Action Buttons */}
                             <div className="flex space-x-4 mt-8">
-                                <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
-                                    Start WASH
-                                </button>
+                                {carInfo?.status === 'pending' && (
+                                    <button
+                                        onClick={handleStartWash}
+                                        className="flex-1 py-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                    >
+                                        Start WASH
+                                    </button>
+                                )}
+                                {carInfo?.status === 'in-progress' && (
+                                    <button
+                                        onClick={handleFinishWash}
+                                        className="flex-1 py-4 text-xl font-bold rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                    >
+                                        Finish WASH
+                                    </button>
+                                )}
+                                {carInfo?.status === 'finished' && (
+                                    <button
+                                        onClick={handleCompleteSale}
+                                        className="flex-1 py-4 text-xl font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                    >
+                                        Complete
+                                    </button>
+                                )}
+                                {!carInfo?.status && (
+                                    <>
+                                        <button
+                                            onClick={handleStartWash}
+                                            className="flex-1 py-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                        >
+                                            Start WASH
+                                        </button>
+                                        <button
+                                            onClick={handleCompleteSale}
+                                            className="flex-1 py-4 text-xl font-bold rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                        >
+                                            Finish
+                                        </button>
+                                    </>
+                                )}
                                 <button
-                                    onClick={handleCompleteSale}
-                                    className="flex-1 py-4 text-xl font-bold rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                    onClick={handleCancel}
+                                    className="flex-1 py-4 text-xl font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
                                 >
-                                    Finish
-                                </button>
-                                <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
                                     Cancel
                                 </button>
                             </div>
@@ -287,38 +411,67 @@ function PaymentContent() {
             </div>
 
             <div className="flex h-[calc(100vh-80px)]">
-                {/* Left Panel - Sale Details */}
-                <div className={`w-2/5 p-6 ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
-                    {/* Car Info Box - Always show for consistency */}
+                {/* Left Panel - Sale Details */}                <div className={`w-2/5 p-6 ${isDarkMode ? 'bg-slate-800' : 'bg-white'} flex flex-col`}>                    {/* Car Info Box - Always show for consistency */}
                     <div className={`mb-6 p-4 border-2 border-dashed rounded-lg ${isDarkMode ? 'border-slate-600 bg-slate-700' : 'border-gray-400 bg-gray-50'
                         }`}>
                         <div className={`text-center font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                             Car info
                         </div>
                         <div className={`text-center text-sm mt-1 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
-                            ABC-123 Name: Minh Phone: 012312310
+                            {carInfo ? (
+                                `${carInfo.licensePlate} Name: ${carInfo.customer} Time: ${carInfo.time}`
+                            ) : (
+                                customerInfo ? (
+                                    `${customerInfo.vehiclePlate || 'N/A'} Name: ${customerInfo.name} Phone: ${customerInfo.phone}`
+                                ) : (
+                                    'ABC-123 Name: Minh Phone: 012312310'
+                                )
+                            )}
+                        </div>
+                    </div>{/* Scrollable Items List */}
+                    <div className="flex-1 flex flex-col min-h-0">
+                        <div className={`mb-3 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'} font-semibold`}>
+                            Items ({cart.length})
+                        </div>
+                        <div className={`flex-1 overflow-y-auto scrollbar-thin pr-2 ${isDarkMode ? 'scrollbar-thumb-slate-600 scrollbar-track-slate-800' : 'scrollbar-thumb-gray-400 scrollbar-track-gray-200'}`}
+                            style={{ maxHeight: 'calc(100vh - 450px)' }}>
+                            <div className="space-y-3">
+                                {cart.map((item, index) => (
+                                    <div key={item.service.id} className={`p-4 rounded-lg border transition-all duration-200 hover:shadow-md hover:scale-[1.02] ${isDarkMode ? 'border-slate-600 bg-slate-700 hover:bg-slate-600' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'}`}>
+                                        <div className="flex justify-between items-start">
+                                            <div className="flex-1 pr-3">
+                                                <div className={`font-semibold text-base mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                                                    {item.service.name}
+                                                </div>
+                                                <div className={`text-sm flex items-center gap-2 ${isDarkMode ? 'text-slate-400' : 'text-gray-500'}`}>
+                                                    <span>Qty: {item.quantity}</span>
+                                                    <span>•</span>
+                                                    <span>{formatCurrency(item.service.price)}/each</span>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="font-bold text-blue-600 text-lg">
+                                                    {formatCurrency(item.subtotal)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {cart.length === 0 && (
+                                    <div className={`text-center py-12 ${isDarkMode ? 'text-slate-400' : 'text-gray-500'}`}>
+                                        <div className="text-4xl mb-4">🛒</div>
+                                        <p className="text-lg font-medium">No items in cart</p>
+                                        <p className="text-sm mt-2">Add services to get started</p>
+                                    </div>
+                                )}
+                                {/* Add padding at bottom for better scroll experience */}
+                                {cart.length > 0 && <div className="h-4"></div>}
+                            </div>
                         </div>
                     </div>
 
-                    <div className="space-y-3 mb-6">
-                        {cart.map((item, index) => (
-                            <div key={item.service.id} className="flex justify-between items-center">
-                                <div>
-                                    <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                                        {item.service.name}
-                                    </div>
-                                    <div className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-500'}`}>
-                                        Qty: {item.quantity}
-                                    </div>
-                                </div>
-                                <div className="font-bold text-blue-600">
-                                    {formatCurrency(item.subtotal)}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className={`border-t pt-4 space-y-2 ${isDarkMode ? 'border-slate-600' : 'border-gray-200'}`}>
+                    {/* Summary Section - Fixed at bottom */}
+                    <div className={`border-t pt-4 space-y-2 mt-4 ${isDarkMode ? 'border-slate-600' : 'border-gray-200'}`}>
                         <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
                             <span>Subtotal</span>
                             <span>{formatCurrency(subtotal)}</span>
@@ -397,24 +550,51 @@ function PaymentContent() {
                     <div className="text-center">
                         <div className={`text-sm mb-4 ${isDarkMode ? 'text-slate-300' : 'text-gray-600'}`}>
                             Add a customer to pay with the following options:
-                        </div>
-
-                        {/* Car Status */}
-                        <div className={`p-4 rounded-lg mt-6 ${isDarkMode ? 'bg-slate-600' : 'bg-gray-300'} text-center`}>
-                            <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                                Car Status: Pending
+                        </div>                        {/* Car Status */}
+                        <div className={`p-4 rounded-lg mt-6 border ${isDarkMode ? getStatusColorDark(carInfo?.status || 'pending') : getStatusColor(carInfo?.status || 'pending')} text-center`}>
+                            <div className="font-medium">
+                                Car Status: {formatStatus(carInfo?.status || 'pending')}
                             </div>
-                        </div>
-
-                        {/* Action Buttons */}
+                        </div>                        {/* Action Buttons */}
                         <div className="flex space-x-4 mt-6">
-                            <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
-                                Start WASH
-                            </button>
-                            <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
-                                Finish
-                            </button>
-                            <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
+                            {carInfo?.status === 'pending' && (
+                                <button
+                                    onClick={handleStartWash}
+                                    className="flex-1 py-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                >
+                                    Start WASH
+                                </button>
+                            )}
+                            {carInfo?.status === 'in-progress' && (
+                                <button
+                                    onClick={handleFinishWash}
+                                    className="flex-1 py-4 text-xl font-bold rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                >
+                                    Finish WASH
+                                </button>
+                            )}
+                            {carInfo?.status === 'finished' && (
+                                <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
+                                    Complete
+                                </button>
+                            )}
+                            {!carInfo?.status && (
+                                <>
+                                    <button
+                                        onClick={handleStartWash}
+                                        className="flex-1 py-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                                    >
+                                        Start WASH
+                                    </button>
+                                    <button className="flex-1 py-4 text-xl font-bold rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-all duration-200 hover:scale-105 shadow-lg">
+                                        Finish
+                                    </button>
+                                </>
+                            )}
+                            <button
+                                onClick={handleCancel}
+                                className="flex-1 py-4 text-xl font-bold rounded-lg bg-red-600 hover:bg-red-700 text-white transition-all duration-200 hover:scale-105 shadow-lg"
+                            >
                                 Cancel
                             </button>
                         </div>
